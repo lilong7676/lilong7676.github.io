@@ -1,9 +1,13 @@
 ---
 title: 笔记：Shell基本语法
 date: 2019-06-11 19:35:01
+
 tags:
   - shell
-categories:
+  
+categories: 
+  - shell分类
+  
 comments: false
 ---
 ```
