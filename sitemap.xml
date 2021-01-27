@@ -2,44 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://lilong7676.github.io/2021/01/26/JavaScript/chrome-extension%E5%AE%9E%E7%8E%B0%E7%9B%91%E6%B5%8B%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E5%8F%8A%E5%B1%80%E9%99%90%E6%80%A7/</loc>
-    
-    <lastmod>2021-01-27T04:46:21.582Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://lilong7676.github.io/tags/index.html</loc>
     
-    <lastmod>2021-01-26T03:23:20.745Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lilong7676.github.io/2019/06/12/Shell%E8%84%9A%E6%9C%AC/%E7%BB%88%E7%AB%AF%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
-    
-    <lastmod>2021-01-26T03:23:20.736Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lilong7676.github.io/2019/06/11/shell%E5%88%86%E7%B1%BB/%E7%AC%94%E8%AE%B0%EF%BC%9AShell%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</loc>
-    
-    <lastmod>2021-01-26T03:23:20.736Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lilong7676.github.io/categories/index.html</loc>
-    
-    <lastmod>2021-01-26T03:23:20.736Z</lastmod>
+    <lastmod>2021-01-27T04:55:01.285Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://lilong7676.github.io/2020/02/01/uncategorized/%E7%9B%B4%E8%A7%89/</loc>
     
-    <lastmod>2021-01-26T03:23:20.735Z</lastmod>
+    <lastmod>2021-01-27T04:55:01.281Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lilong7676.github.io/2019/06/11/shell%E5%88%86%E7%B1%BB/%E7%AC%94%E8%AE%B0%EF%BC%9AShell%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</loc>
+    
+    <lastmod>2021-01-27T04:55:01.281Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lilong7676.github.io/2019/06/12/Shell%E8%84%9A%E6%9C%AC/%E7%BB%88%E7%AB%AF%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
+    
+    <lastmod>2021-01-27T04:55:01.281Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lilong7676.github.io/categories/index.html</loc>
+    
+    <lastmod>2021-01-27T04:55:01.281Z</lastmod>
     
   </url>
   
