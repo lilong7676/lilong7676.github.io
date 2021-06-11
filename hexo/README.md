@@ -1,4 +1,10 @@
-[hexo教程参考地址](https://hexo.io/zh-cn/docs/commands)
+### 先cd到hexo目录!!
+```
+$cd hexo
+$hexo genrate
+$hexo deploy
+```
+
 ###注意Node版本，需要<=V12
 `nvm ls; 
 nvm use v12.20;`
