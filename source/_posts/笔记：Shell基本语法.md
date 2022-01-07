@@ -6,7 +6,7 @@ tags:
   - shell
   
 categories: 
-  - shell分类
+  - Shell脚本
   
 comments: false
 ---

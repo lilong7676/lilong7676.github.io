@@ -1,6 +1,4 @@
-### 先cd到hexo目录!!
 ```
-$cd hexo
 $hexo genrate
 $hexo deploy
 ```
@@ -9,4 +7,4 @@ $hexo deploy
 `nvm ls; 
 nvm use v12.20;`
 > 常用命令
-- `hexo new "post title with whitespace"`
+- `npx hexo new "post title with whitespace"`
