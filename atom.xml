@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>费默 - 读书分享</title>
+  <title>费默 - 分享</title>
   
   <subtitle>荒诞-反抗</subtitle>
   <link href="/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://lilong7676.github.io/</id>
   
   <author>
-    <name>Longlong Li</name>
+    <name>lilong7676</name>
     
   </author>
   
@@ -50,7 +50,7 @@
     <link href="https://lilong7676.github.io/2019/06/12/Shell%E8%84%9A%E6%9C%AC/%E7%BB%88%E7%AB%AF%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
     <id>https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/</id>
     <published>2019-06-12T00:16:41.000Z</published>
-    <updated>2022-01-07T08:32:11.360Z</updated>
+    <updated>2022-01-07T08:42:00.823Z</updated>
     
     <content type="html"><![CDATA[<p>查看该目录下各个文件和子目录各占多少空间</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh *</span><br></pre></td></tr></table></figure><a id="more"></a><p>批量复制文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp *.png *.jpeg *.gif /destpath (剪切的话 cp换成 mv)</span><br></pre></td></tr></table></figure><p>快速创建便笺<br>选中文字，然后</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift + command + Y</span><br></pre></td></tr></table></figure><p>保持窗口的激活状态<br>当你在当前窗口操作时，想拖拽其他窗口， 可以按住<code>command</code>再进行拖 </p>]]></content>
     
