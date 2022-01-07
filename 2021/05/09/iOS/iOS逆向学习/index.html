@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS逆向学习 | 费默 - 读书分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS逆向学习">
+<meta property="og:url" content="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/index.html">
+<meta property="og:site_name" content="费默 - 读书分享">
+<meta property="og:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2022-01-07T08:15:41.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS逆向学习">
+<meta name="twitter:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 读书分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 读书分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">荒诞-反抗</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS逆向学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/09/iOS/iOS逆向学习/" class="article-date">
+  <time datetime="2021-05-09T08:20:20.000Z" itemprop="datePublished">2021-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS逆向学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>参考资料：</p>
+</blockquote>
+<ul>
+<li><a href="https://www.jianshu.com/p/f229f8df3220" target="_blank" rel="noopener">2019年iOS逆向最新学习资料（一）：理论基础和工具准备
+</a></li>
+<li><a href="https://www.jianshu.com/p/8d42d71fb9e1" target="_blank" rel="noopener">iOS逆向, 基础工具之LLDB和debugserver</a></li>
+<li><a href="https://juejin.cn/post/6844904094360961037" target="_blank" rel="noopener">debugserver+lldb使用</a></li>
+<li><a href="https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">MonkeyDev 文档</a></li>
+<li><a href="https://www.jianshu.com/p/991b13c10c1f" target="_blank" rel="noopener">Cycript 基本使用</a></li>
+<li><a href="https://juejin.cn/post/6942419453879517192" target="_blank" rel="noopener">小谷的足迹2 – iOS逆向安防从入门到秃头</a></li>
+<li><a href="https://blog.csdn.net/qq_34003239/article/details/97625507" target="_blank" rel="noopener">lldb插件 强大的调试神器Chisel</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cky44k6690004a1ckdkqarwi2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/01/uncategorized/直觉/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">读《物理学的进化》想法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell分类/">shell分类</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/terminal/">terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/想法/">想法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/想法/" style="font-size: 10px;">想法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/05/09/iOS/iOS逆向学习/">iOS逆向学习</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/01/uncategorized/直觉/">读《物理学的进化》想法</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/Shell脚本/终端实用命令/">mac终端实用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/11/shell分类/笔记：Shell基本语法/">笔记：Shell基本语法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Longlong Li<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
