@@ -5,20 +5,23 @@
   
 
   
-  <title>iOS逆向学习 | 费默 - 分享</title>
+  <title>一个简单的 WebAssembly 编译流程 demo | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
-<meta name="keywords" content="iOS">
+  <meta name="description" content="记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 官方github。">
+<meta name="keywords" content="WebAssembly">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS逆向学习">
-<meta property="og:url" content="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/index.html">
+<meta property="og:title" content="一个简单的 WebAssembly 编译流程 demo">
+<meta property="og:url" content="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta property="og:description" content="记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 官方github。">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2022-01-07T08:15:41.442Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180332.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180019.png">
+<meta property="og:updated_time" content="2022-08-25T10:04:44.770Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS逆向学习">
-<meta name="twitter:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta name="twitter:title" content="一个简单的 WebAssembly 编译流程 demo">
+<meta name="twitter:description" content="记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 官方github。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180332.png">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
   
@@ -69,14 +72,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-iOS逆向学习" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-一个简单的WebAssembly编译流程demo" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/05/09/iOS/iOS逆向学习/" class="article-date">
-  <time datetime="2021-05-09T08:20:20.000Z" itemprop="datePublished">2021-05-09</time>
+    <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" class="article-date">
+  <time datetime="2022-08-25T08:09:19.000Z" itemprop="datePublished">2022-08-25</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+    <a class="article-category-link" href="/categories/WebAssembly/">WebAssembly</a>
   </div>
 
   </div>
@@ -87,7 +90,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS逆向学习
+      一个简单的 WebAssembly 编译流程 demo
     </h1>
   
 
@@ -95,27 +98,43 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>参考资料：</p>
-</blockquote>
-<ul>
-<li><a href="https://www.jianshu.com/p/f229f8df3220" target="_blank" rel="noopener">2019年iOS逆向最新学习资料（一）：理论基础和工具准备
-</a></li>
-<li><a href="https://www.jianshu.com/p/8d42d71fb9e1" target="_blank" rel="noopener">iOS逆向, 基础工具之LLDB和debugserver</a></li>
-<li><a href="https://juejin.cn/post/6844904094360961037" target="_blank" rel="noopener">debugserver+lldb使用</a></li>
-<li><a href="https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">MonkeyDev 文档</a></li>
-<li><a href="https://www.jianshu.com/p/991b13c10c1f" target="_blank" rel="noopener">Cycript 基本使用</a></li>
-<li><a href="https://juejin.cn/post/6942419453879517192" target="_blank" rel="noopener">小谷的足迹2 – iOS逆向安防从入门到秃头</a></li>
-<li><a href="https://blog.csdn.net/qq_34003239/article/details/97625507" target="_blank" rel="noopener">lldb插件 强大的调试神器Chisel</a></li>
-</ul>
+        <p>记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 <a href="https://github.com/emscripten-core/emsdk" target="_blank" rel="noopener">官方github</a>。</p>
+<a id="more"></a>
+
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件:"></a>前置条件:</h2><p>git、cmake、Xcode(主要是llvm, linux为GCC)、Python 2.7.x</p>
+<h2 id="编译-emsdk"><a href="#编译-emsdk" class="headerlink" title="编译 emsdk:"></a>编译 emsdk:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/juj/emsdk.git</span><br><span class="line">$ <span class="built_in">cd</span> emsdk</span><br><span class="line">$ ./emsdk install latest</span><br><span class="line">$ ./emsdk activate latest</span><br></pre></td></tr></table></figure>
+
+<p>如果希望将 emsdk 加入到终端的环境变量里，则执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> <span class="string">"&#123;path_to_emsdk&#125;/emsdk_env.sh"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="编译一个demo试试吧："><a href="#编译一个demo试试吧：" class="headerlink" title="编译一个demo试试吧："></a>编译一个demo试试吧：</h2><ol>
+<li><p>新建一个 hello.c，内容如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emcc hello.c -s WASM=1 -o hello.html</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>注意 *-s WASM=1 * 参数，不加这个话，会编译为asm.js。</p>
+<p>如果想要生成一个模板 html 页面，则输出文件的格式需为 html，即 * -o hello.html *。</p>
+<p><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180332.png" alt="生成的文件"></p>
+<ol start="3">
+<li>我们可以使用 emrun 命令来创建一个 http 协议的 web server 来展示我们编译后的文件。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emrun --no_browser --port 8080 .</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>在浏览器打开 <a href="http://0.0.0.0:8080/hello.html：" target="_blank" rel="noopener">http://0.0.0.0:8080/hello.html：</a><br><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180019.png" alt="效果图"></li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cl78vpcig0000amckg6myp1c6" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl78vpcim0002amcko9am5n08" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li></ul>
 
     </footer>
   </div>
@@ -123,19 +142,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          如何实现一个js浏览器端沙箱
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/12/Shell脚本/终端实用命令/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mac终端实用命令</div>
+      <div class="article-nav-title">参考iOS开发中的 UINavigationController 的思想，实现一个 React NavigationController</div>
     </a>
   
 </nav>

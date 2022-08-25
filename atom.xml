@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilong7676.github.io/"/>
-  <updated>2022-08-25T07:58:21.398Z</updated>
+  <updated>2022-08-25T10:04:44.770Z</updated>
   <id>https://lilong7676.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个简单的 WebAssembly 编译流程 demo</title>
+    <link href="https://lilong7676.github.io/2022/08/25/WebAssembly/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84WebAssembly%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8Bdemo/"/>
+    <id>https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/</id>
+    <published>2022-08-25T08:09:19.000Z</published>
+    <updated>2022-08-25T10:04:44.770Z</updated>
+    
+    <content type="html"><![CDATA[<p>记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 <a href="https://github.com/emscripten-core/emsdk" target="_blank" rel="noopener">官方github</a>。</p><a id="more"></a><h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件:"></a>前置条件:</h2><p>git、cmake、Xcode(主要是llvm, linux为GCC)、Python 2.7.x</p><h2 id="编译-emsdk"><a href="#编译-emsdk" class="headerlink" title="编译 emsdk:"></a>编译 emsdk:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/juj/emsdk.git</span><br><span class="line">$ <span class="built_in">cd</span> emsdk</span><br><span class="line">$ ./emsdk install latest</span><br><span class="line">$ ./emsdk activate latest</span><br></pre></td></tr></table></figure><p>如果希望将 emsdk 加入到终端的环境变量里，则执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> <span class="string">"&#123;path_to_emsdk&#125;/emsdk_env.sh"</span></span><br></pre></td></tr></table></figure><h2 id="编译一个demo试试吧："><a href="#编译一个demo试试吧：" class="headerlink" title="编译一个demo试试吧："></a>编译一个demo试试吧：</h2><ol><li><p>新建一个 hello.c，内容如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>执行命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emcc hello.c -s WASM=1 -o hello.html</span><br></pre></td></tr></table></figure></li></ol><p>注意 *-s WASM=1 * 参数，不加这个话，会编译为asm.js。</p><p>如果想要生成一个模板 html 页面，则输出文件的格式需为 html，即 * -o hello.html *。</p><p><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180332.png" alt="生成的文件"></p><ol start="3"><li>我们可以使用 emrun 命令来创建一个 http 协议的 web server 来展示我们编译后的文件。</li></ol><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emrun --no_browser --port 8080 .</span><br></pre></td></tr></table></figure><ol start="4"><li>在浏览器打开 <a href="http://0.0.0.0:8080/hello.html：" target="_blank" rel="noopener">http://0.0.0.0:8080/hello.html：</a><br><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180019.png" alt="效果图"></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 &lt;a href=&quot;https://github.com/emscripten-core/emsdk&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;官方github&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="WebAssembly" scheme="https://lilong7676.github.io/categories/WebAssembly/"/>
+    
+    
+      <category term="WebAssembly" scheme="https://lilong7676.github.io/tags/WebAssembly/"/>
+    
+  </entry>
   
   <entry>
     <title>参考iOS开发中的 UINavigationController 的思想，实现一个 React NavigationController</title>
@@ -41,10 +63,10 @@
   
   <entry>
     <title>一个简单的web IM程序</title>
-    <link href="https://lilong7676.github.io/2022/08/25/uncategorized/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84web-IM%E7%A8%8B%E5%BA%8F/"/>
-    <id>https://lilong7676.github.io/2022/08/25/uncategorized/一个简单的web-IM程序/</id>
+    <link href="https://lilong7676.github.io/2022/08/25/web/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84web-IM%E7%A8%8B%E5%BA%8F/"/>
+    <id>https://lilong7676.github.io/2022/08/25/web/一个简单的web-IM程序/</id>
     <published>2022-08-25T07:24:03.000Z</published>
-    <updated>2022-08-25T07:29:01.168Z</updated>
+    <updated>2022-08-25T09:31:27.204Z</updated>
     
     <content type="html"><![CDATA[<h3 id="主要技术栈"><a href="#主要技术栈" class="headerlink" title="主要技术栈"></a>主要技术栈</h3><ul><li>React</li><li>Indexeddb(Dexie)</li><li>Socket.io</li><li>Nodejs + Express + typeorm + Mysql + Redis</li><li>Pnpm monorepo</li><li>Docker compose + Github Actions CI</li></ul><p>实现细节请查看github仓库: <a href="https://github.com/lilong7676/simple-chat" target="_blank" rel="noopener">simple-chat</a></p><a id="more"></a><h3 id="目前主要功能"><a href="#目前主要功能" class="headerlink" title="目前主要功能:"></a>目前主要功能:</h3><ul><li>user register &amp; login</li><li>single chat</li></ul><h3 id="start-dev"><a href="#start-dev" class="headerlink" title="start dev:"></a>start dev:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pnpm install &amp;&amp; npm run dev-server &amp;&amp; npm run dev-static</span><br></pre></td></tr></table></figure><p>then open <em>localhost:3000/app</em> in browser.</p><h3 id="build-for-production"><a href="#build-for-production" class="headerlink" title="build for production:"></a>build for production:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker compose up</span><br></pre></td></tr></table></figure><p>then open <em>localhost/app</em> in browser.</p>]]></content>
     
@@ -62,6 +84,18 @@
     
     </summary>
     
+      <category term="web" scheme="https://lilong7676.github.io/categories/web/"/>
+    
+    
+      <category term="React" scheme="https://lilong7676.github.io/tags/React/"/>
+    
+      <category term="Docker" scheme="https://lilong7676.github.io/tags/Docker/"/>
+    
+      <category term="CI/CD" scheme="https://lilong7676.github.io/tags/CI-CD/"/>
+    
+      <category term="Indexeddb" scheme="https://lilong7676.github.io/tags/Indexeddb/"/>
+    
+      <category term="nodejs" scheme="https://lilong7676.github.io/tags/nodejs/"/>
     
   </entry>
   
