@@ -7,7 +7,7 @@ categories:
 
 
 #### 参考iOS开发中的 UINavigationController 的思想，实现了在React项目中的类似 iOS 页面转场的效果。
-
+github：[navigation-controller](https://github.com/lilong7676/simple-chat/tree/main/packages/navigation-controller)
 
 - 使用方式
   ```
