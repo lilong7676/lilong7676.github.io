@@ -2,7 +2,13 @@
 title: 一个简单的web IM程序
 date: 2022-08-25 15:24:03
 tags:
+ - React
+ - Docker
+ - CI/CD
+ - Indexeddb
+ - nodejs
 categories:
+ - web
 ---
 
 
