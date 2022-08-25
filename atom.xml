@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilong7676.github.io/"/>
-  <updated>2022-01-21T02:22:22.132Z</updated>
+  <updated>2022-08-25T07:29:01.168Z</updated>
   <id>https://lilong7676.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个简单的web IM程序</title>
+    <link href="https://lilong7676.github.io/2022/08/25/uncategorized/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84web-IM%E7%A8%8B%E5%BA%8F/"/>
+    <id>https://lilong7676.github.io/2022/08/25/uncategorized/一个简单的web-IM程序/</id>
+    <published>2022-08-25T07:24:03.000Z</published>
+    <updated>2022-08-25T07:29:01.168Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="主要技术栈"><a href="#主要技术栈" class="headerlink" title="主要技术栈"></a>主要技术栈</h3><ul><li>React</li><li>Indexeddb(Dexie)</li><li>Socket.io</li><li>Nodejs + Express + typeorm + Mysql + Redis</li><li>Pnpm monorepo</li><li>Docker compose + Github Actions CI</li></ul><p>实现细节请查看github仓库: <a href="https://github.com/lilong7676/simple-chat" target="_blank" rel="noopener">simple-chat</a></p><a id="more"></a><h3 id="目前主要功能"><a href="#目前主要功能" class="headerlink" title="目前主要功能:"></a>目前主要功能:</h3><ul><li>user register &amp; login</li><li>single chat</li></ul><h3 id="start-dev"><a href="#start-dev" class="headerlink" title="start dev:"></a>start dev:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pnpm install &amp;&amp; npm run dev-server &amp;&amp; npm run dev-static</span><br></pre></td></tr></table></figure><p>then open <em>localhost:3000/app</em> in browser.</p><h3 id="build-for-production"><a href="#build-for-production" class="headerlink" title="build for production:"></a>build for production:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker compose up</span><br></pre></td></tr></table></figure><p>then open <em>localhost/app</em> in browser.</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;主要技术栈&quot;&gt;&lt;a href=&quot;#主要技术栈&quot; class=&quot;headerlink&quot; title=&quot;主要技术栈&quot;&gt;&lt;/a&gt;主要技术栈&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;React&lt;/li&gt;
+&lt;li&gt;Indexeddb(Dexie)&lt;/li&gt;
+&lt;li&gt;Socket.io&lt;/li&gt;
+&lt;li&gt;Nodejs + Express + typeorm + Mysql + Redis&lt;/li&gt;
+&lt;li&gt;Pnpm monorepo&lt;/li&gt;
+&lt;li&gt;Docker compose + Github Actions CI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实现细节请查看github仓库: &lt;a href=&quot;https://github.com/lilong7676/simple-chat&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;simple-chat&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>如何实现一个js浏览器端沙箱</title>
