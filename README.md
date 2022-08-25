@@ -1,5 +1,5 @@
 ```
-$hexo genrate
+$hexo generate
 $hexo deploy
 ```
 

@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "new": "hexo new 'new post'",
-    "start": "npm run serve",
+    "new": "nvm use && hexo new 'new post'",
+    "start": "nvm use && npm run serve",
     "serve": "hexo server",
-    "build": "npm run clean && hexo generate",
-    "deploy": "npm run clean && hexo generate --deploy",
+    "build": "nvm use && npm run clean && hexo generate",
+    "deploy": "nvm use && npm run clean && hexo generate --deploy",
     "clean": "rm -rf ./public/*"
   },
   "hexo": {
