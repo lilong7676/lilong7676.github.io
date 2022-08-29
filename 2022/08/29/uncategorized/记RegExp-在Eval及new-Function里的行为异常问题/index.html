@@ -5,19 +5,20 @@
   
 
   
-  <title>Archives: 2022/1 | 费默 - 分享</title>
+  <title>记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题 | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="FE,iOSer">
+  <meta name="description" content="首先看一下最简单的代码 123const r = /^(\d&amp;#123;4&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)$/;r.exec(&apos;2019-10-08&apos;);console.log(RegExp.$1); // 2019  上面这段代码在 Chrome console 中执行结果为 2019，一切正常。 12345eval(`const r">
 <meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="费默 - 分享">
-<meta property="og:url" content="https://lilong7676.github.io/archives/2022/01/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题">
+<meta property="og:url" content="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="FE,iOSer">
+<meta property="og:description" content="首先看一下最简单的代码 123const r = /^(\d&amp;#123;4&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)$/;r.exec(&apos;2019-10-08&apos;);console.log(RegExp.$1); // 2019  上面这段代码在 Chrome console 中执行结果为 2019，一切正常。 12345eval(`const r">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2022-08-29T02:04:57.165Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="费默 - 分享">
-<meta name="twitter:description" content="FE,iOSer">
+<meta name="twitter:title" content="记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题">
+<meta name="twitter:description" content="首先看一下最简单的代码 123const r = /^(\d&amp;#123;4&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)-(\d&amp;#123;1,2&amp;#125;)$/;r.exec(&apos;2019-10-08&apos;);console.log(RegExp.$1); // 2019  上面这段代码在 Chrome console 中执行结果为 2019，一切正常。 12345eval(`const r">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
   
@@ -68,40 +69,67 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" class="archive-article-date">
-  <time datetime="2022-01-21T01:39:16.000Z" itemprop="datePublished">Jan 21</time>
+        <section id="main"><article id="post-记RegExp-在Eval及new-Function里的行为异常问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" class="article-date">
+  <time datetime="2022-08-29T01:31:43.000Z" itemprop="datePublished">2022-08-29</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/">如何实现一个js浏览器端沙箱</a>
+    <h1 class="article-title" itemprop="name">
+      记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先看一下最简单的代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> r = <span class="regexp">/^(\d&#123;4&#125;)-(\d&#123;1,2&#125;)-(\d&#123;1,2&#125;)$/</span>;</span><br><span class="line">r.exec(<span class="string">'2019-10-08'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">RegExp</span>.$<span class="number">1</span>); <span class="comment">// 2019</span></span><br></pre></td></tr></table></figure>
 
+<p>上面这段代码在 Chrome console 中执行结果为 2019，一切正常。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\d&#123;4&#125;)-(\d&#123;1,2&#125;)-(\d&#123;1,2&#125;)$/;</span></span><br><span class="line"><span class="string">r.exec('2019-10-08');</span></span><br><span class="line"><span class="string">RegExp.$1;</span></span><br><span class="line"><span class="string">`</span>); <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
+
+<p><code>重新打开一个 Chrome console</code>, 然后执行上面这段代码，结果为<code>空字符串</code>，
+经过查阅资料，发现在 eval 中执行 regx的字面量时，需要<code>额外转义</code>反斜线，即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/;</span></span><br><span class="line"><span class="string">r.exec('2019-10-08');</span></span><br><span class="line"><span class="string">RegExp.$1;</span></span><br><span class="line"><span class="string">`</span>); <span class="comment">// '2019'</span></span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>参考资料：</p>
+<ol>
+<li><a href="https://stackoverflow.com/a/61147060/11394539" target="_blank" rel="noopener">https://stackoverflow.com/a/61147060/11394539</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="cl7e4bmv1000dnmckqcxbryih" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一个简单的 WebAssembly 编译流程 demo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

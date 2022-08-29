@@ -70,6 +70,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-记RegExp-在Eval及new-Function里的行为异常问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" class="article-date">
+  <time datetime="2022-08-29T01:31:43.000Z" itemprop="datePublished">2022-08-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/">记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先看一下最简单的代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> r = <span class="regexp">/^(\d&#123;4&#125;)-(\d&#123;1,2&#125;)-(\d&#123;1,2&#125;)$/</span>;</span><br><span class="line">r.exec(<span class="string">'2019-10-08'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">RegExp</span>.$<span class="number">1</span>); <span class="comment">// 2019</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码在 Chrome console 中执行结果为 2019，一切正常。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\d&#123;4&#125;)-(\d&#123;1,2&#125;)-(\d&#123;1,2&#125;)$/;</span></span><br><span class="line"><span class="string">r.exec('2019-10-08');</span></span><br><span class="line"><span class="string">RegExp.$1;</span></span><br><span class="line"><span class="string">`</span>); <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
+
+<p><code>重新打开一个 Chrome console</code>, 然后执行上面这段代码，结果为<code>空字符串</code>，
+经过查阅资料，发现在 eval 中执行 regx的字面量时，需要<code>额外转义</code>反斜线，即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/;</span></span><br><span class="line"><span class="string">r.exec('2019-10-08');</span></span><br><span class="line"><span class="string">RegExp.$1;</span></span><br><span class="line"><span class="string">`</span>); <span class="comment">// '2019'</span></span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="cl7e4bmv1000dnmckqcxbryih" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-一个简单的WebAssembly编译流程demo" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" class="article-date">
@@ -105,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl78vpcim0002amcko9am5n08" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl7e4bmuw0007nmckhnqrhk0e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li></ul>
@@ -153,7 +202,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" data-id="cl78vpcis0006amckzaehjyta" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" data-id="cl7e4bmuu0006nmckhqa6ili4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -206,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/web/一个简单的web-IM程序/" data-id="cl78vpciz000damckg6lajjud" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/web/一个简单的web-IM程序/" data-id="cl7e4bmup0002nmck2xdc1ylu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -256,7 +305,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" data-id="cl78vpciy000camckq4z6mw58" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" data-id="cl7e4bmux0008nmckqjik6z9v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -309,7 +358,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cl78vpcig0000amckg6myp1c6" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cl7e4bmuj0000nmcklvfahgw3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -357,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/" data-id="cl78vpciv0008amck1fjf7t64" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/" data-id="cl7e4bmv0000cnmck8watl038" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -404,7 +453,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl78vpciu0007amck4oqmw506" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl7e4bmv3000hnmckd6vx34hj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -468,6 +517,10 @@
       <ul>
         
           <li>
+            <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/">记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题</a>
+          </li>
+        
+          <li>
             <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/">一个简单的 WebAssembly 编译流程 demo</a>
           </li>
         
@@ -481,10 +534,6 @@
         
           <li>
             <a href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/">如何实现一个js浏览器端沙箱</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/09/iOS/iOS逆向学习/">iOS逆向学习</a>
           </li>
         
       </ul>
