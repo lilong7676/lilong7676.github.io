@@ -70,6 +70,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-web前端Proxy沙箱实现时需注意RegExp等原生对象问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" class="article-date">
+  <time datetime="2022-08-31T06:52:01.000Z" itemprop="datePublished">2022-08-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/">web前端Proxy沙箱实现时需注意RegExp等原生对象问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h2><p>起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">    const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/</span></span><br><span class="line"><span class="string">    r.exec('2022-08-31')</span></span><br><span class="line"><span class="string">    return RegExp.$1;`</span>;</span><br><span class="line">evalScriptInSandbox(code);</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="cl7h9j6qf0000vqcklyhyagwv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-记RegExp-在Eval及new-Function里的行为异常问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" class="article-date">
@@ -109,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="cl7e4bmv1000dnmckqcxbryih" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="cl7h9j6rq000gvqckls9sy6sg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -154,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl7e4bmuw0007nmckhnqrhk0e" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl7h9j6qz0002vqckcjuqss4o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li></ul>
@@ -202,7 +248,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" data-id="cl7e4bmuu0006nmckhqa6ili4" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" data-id="cl7h9j6ra0005vqcko8mbsld6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -255,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/web/一个简单的web-IM程序/" data-id="cl7e4bmup0002nmck2xdc1ylu" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/web/一个简单的web-IM程序/" data-id="cl7h9j6re0007vqck7a8ncujl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -305,7 +351,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" data-id="cl7e4bmux0008nmckqjik6z9v" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" data-id="cl7h9j6rj000dvqck5bi37xul" class="article-share-link">Share</a>
       
       
     </footer>
@@ -358,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cl7e4bmuj0000nmcklvfahgw3" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="cl7h9j6rh000avqck8a4ht4ni" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -406,7 +452,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/" data-id="cl7e4bmv0000cnmck8watl038" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/" data-id="cl7h9j6ru000ivqckd4beh5u9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -453,7 +499,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl7e4bmv3000hnmckd6vx34hj" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl7h9j6rf0008vqck6d6rr68f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -517,6 +563,10 @@
       <ul>
         
           <li>
+            <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/">web前端Proxy沙箱实现时需注意RegExp等原生对象问题</a>
+          </li>
+        
+          <li>
             <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/">记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题</a>
           </li>
         
@@ -530,10 +580,6 @@
         
           <li>
             <a href="/2022/08/25/web/一个简单的web-IM程序/">一个简单的web IM程序</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/">如何实现一个js浏览器端沙箱</a>
           </li>
         
       </ul>
