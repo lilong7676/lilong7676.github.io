@@ -49,6 +49,8 @@ const evalScriptSandbox = (code, fakeWindow) => {
 
 ## Reproduce Step :
 ```bash
+$ git clone https://github.com/lilong7676/js-regexp-bug.git
+$ cd js-regexp-bug
 $ npm i
 $ npm run start
 ```
