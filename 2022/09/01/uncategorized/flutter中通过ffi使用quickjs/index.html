@@ -5,20 +5,20 @@
   
 
   
-  <title>mac终端实用命令 | 费默 - 分享</title>
+  <title>flutter中通过ffi使用quickjs | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="查看该目录下各个文件和子目录各占多少空间 1du -sh *">
-<meta name="keywords" content="shell">
+  <meta name="description" content="quickjs中 判断 JSValue 的类型   在 quickjs.h 中 搜索 JS_Is开头的方法:  JS_IsBool(JSValue) JS_IsNull JS_IsUndefined JS_IsNumber JS_IsString JS_IsObject JS_IsException …">
+<meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac终端实用命令">
-<meta property="og:url" content="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/index.html">
+<meta property="og:title" content="flutter中通过ffi使用quickjs">
+<meta property="og:url" content="https://lilong7676.github.io/2022/09/01/uncategorized/flutter中通过ffi使用quickjs/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="查看该目录下各个文件和子目录各占多少空间 1du -sh *">
+<meta property="og:description" content="quickjs中 判断 JSValue 的类型   在 quickjs.h 中 搜索 JS_Is开头的方法:  JS_IsBool(JSValue) JS_IsNull JS_IsUndefined JS_IsNumber JS_IsString JS_IsObject JS_IsException …">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2022-01-07T08:42:00.823Z">
+<meta property="og:updated_time" content="2022-09-08T07:39:57.656Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac终端实用命令">
-<meta name="twitter:description" content="查看该目录下各个文件和子目录各占多少空间 1du -sh *">
+<meta name="twitter:title" content="flutter中通过ffi使用quickjs">
+<meta name="twitter:description" content="quickjs中 判断 JSValue 的类型   在 quickjs.h 中 搜索 JS_Is开头的方法:  JS_IsBool(JSValue) JS_IsNull JS_IsUndefined JS_IsNumber JS_IsString JS_IsObject JS_IsException …">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
   
@@ -69,16 +69,12 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-终端实用命令" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-flutter中通过ffi使用quickjs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/12/Shell脚本/终端实用命令/" class="article-date">
-  <time datetime="2019-06-12T00:16:41.000Z" itemprop="datePublished">2019-06-12</time>
+    <a href="/2022/09/01/uncategorized/flutter中通过ffi使用quickjs/" class="article-date">
+  <time datetime="2022-09-01T02:43:43.000Z" itemprop="datePublished">2022-09-01</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Shell脚本/">Shell脚本</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -87,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mac终端实用命令
+      flutter中通过ffi使用quickjs
     </h1>
   
 
@@ -95,45 +91,68 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>查看该目录下各个文件和子目录各占多少空间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh *</span><br></pre></td></tr></table></figure>
+        <ul>
+<li><p>quickjs中 判断 JSValue 的类型</p>
+<p>  在 <code>quickjs.h</code> 中 搜索 <code>JS_Is</code>开头的方法:</p>
+<ul>
+<li>JS_IsBool(JSValue)</li>
+<li>JS_IsNull</li>
+<li>JS_IsUndefined</li>
+<li>JS_IsNumber</li>
+<li>JS_IsString</li>
+<li>JS_IsObject</li>
+<li>JS_IsException</li>
+<li>…</li>
+<li><a id="more"></a>
+</li>
+</ul>
+</li>
+<li><p>quickjs中的 JSValue 与 c 类型的转换</p>
+<p>   在<code>quickjs.h</code>中搜索 <code>JS_To</code>开头的方法：</p>
+<ul>
+<li>JS_ToBool(JSContext, JSValue)</li>
+<li>JS_ToInt32</li>
+<li>JS_ToInt64</li>
+<li>JS_ToFloat64</li>
+<li>JS_ToCString    需注意 JS_FreeCString</li>
+</ul>
+</li>
+</ul>
+<p>为什么 <code>webf</code> 中的 <code>NativeString</code> 类型，使用 uint16_t* 表示 string?</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NativeString</span> &#123;</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">uint16_t</span>* <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">uint32_t</span> length;</span><br><span class="line"></span><br><span class="line">  <span class="function">NativeString* <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> 首先， uint16_t 即为 unsigned short int 类型，值范围为 0 - 65535。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> **/</span></span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
-<p>批量复制文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp *.png *.jpeg *.gif /destpath (剪切的话 cp换成 mv)</span><br></pre></td></tr></table></figure>
-
-<p>快速创建便笺<br>选中文字，然后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift + command + Y</span><br></pre></td></tr></table></figure>
-
-<p>保持窗口的激活状态<br>当你在当前窗口操作时，想拖拽其他窗口， 可以按住<code>command</code>再进行拖 </p>
+<ul>
+<li>有关 JSString、JSAtom 的分析：<ul>
+<li><a href="https://blog.csdn.net/jayyuz/article/details/124450556" target="_blank" rel="noopener">https://blog.csdn.net/jayyuz/article/details/124450556</a></li>
+</ul>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/" data-id="cl7sqshmm000j1qckjmj9teol" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/09/01/uncategorized/flutter中通过ffi使用quickjs/" data-id="cl7sqshlu00001qckcp566yjl" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2021/05/09/iOS/iOS逆向学习/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/09/08/uncategorized/在-vmware-centos7-中探索-k8s-与-KNative/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          iOS逆向学习
+          在 vmware centos7 中安装 minikube
         
       </div>
     </a>
   
   
-    <a href="/2019/06/11/Shell脚本/笔记：Shell基本语法/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">笔记：Shell基本语法</div>
+      <div class="article-nav-title">web前端Proxy沙箱实现时需注意RegExp等原生对象问题</div>
     </a>
   
 </nav>
