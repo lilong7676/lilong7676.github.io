@@ -43,7 +43,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">荒诞-反抗</a>
+          <a href="/" id="subtitle">Just run.</a>
         </h2>
       
     </div>
@@ -95,6 +95,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题起因"><span class="toc-text">问题起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reproduce-Step"><span class="toc-text">Reproduce Step :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#⚠️"><span class="toc-text">⚠️</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类似的原生对象，如-eval-等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。"><span class="toc-text">类似的原生对象，如 eval 等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。</span></a></li></ol></li></ol>
+    </div>
+
         <h2 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h2><p>起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">    const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/</span></span><br><span class="line"><span class="string">    r.exec('2022-08-31')</span></span><br><span class="line"><span class="string">    return RegExp.$1;`</span>;</span><br><span class="line">evalScriptInSandbox(code);</span><br></pre></td></tr></table></figure>
 
@@ -117,7 +123,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="cl7sqshmj000h1qckf0t4rglu" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="cl7ssjbeb0007fsckpc0dlpkh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -154,7 +160,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/minikube/">minikube</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
     </div>
   </div>
 
@@ -196,7 +202,7 @@
       <ul>
         
           <li>
-            <a href="/2022/09/08/k8s/minikube/在-vmware-centos7-中探索-k8s-与-KNative/">在 vmware centos7 中安装 minikube</a>
+            <a href="/2022/09/08/minikube/k8s/在-vmware-centos7-中探索-k8s-与-KNative/">在 vmware centos7 中安装 minikube</a>
           </li>
         
           <li>

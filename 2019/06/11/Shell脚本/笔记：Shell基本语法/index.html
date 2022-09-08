@@ -43,7 +43,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">荒诞-反抗</a>
+          <a href="/" id="subtitle">Just run.</a>
         </h2>
       
     </div>
@@ -95,6 +95,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Shell变量"><span class="toc-text">Shell变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell变量类型-三种"><span class="toc-text">shell变量类型 三种</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#shell字符串"><span class="toc-text">shell字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell-数组"><span class="toc-text">shell 数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell传递参数"><span class="toc-text">shell传递参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell算数运算"><span class="toc-text">shell算数运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell-关系运算符"><span class="toc-text">shell 关系运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#布尔运算符"><span class="toc-text">布尔运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑运算符"><span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串运算符"><span class="toc-text">字符串运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#printf输出"><span class="toc-text">printf输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell流程控制"><span class="toc-text">shell流程控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数"><span class="toc-text">函数</span></a></li></ol></li></ol></li></ol>
+    </div>
+
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// test.sh</span><br><span class="line">#! 是一个约定的标记，它告诉系统这个脚本需要什么解释器来执行，即使用哪一种 Shell。</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
@@ -272,7 +278,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl7sqshme000c1qcku60gbj5w" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2019/06/11/Shell脚本/笔记：Shell基本语法/" data-id="cl7ssjbel000gfsckpgdwotcx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -306,7 +312,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">k8s</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/minikube/">minikube</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
     </div>
   </div>
 
@@ -348,7 +354,7 @@
       <ul>
         
           <li>
-            <a href="/2022/09/08/k8s/minikube/在-vmware-centos7-中探索-k8s-与-KNative/">在 vmware centos7 中安装 minikube</a>
+            <a href="/2022/09/08/minikube/k8s/在-vmware-centos7-中探索-k8s-与-KNative/">在 vmware centos7 中安装 minikube</a>
           </li>
         
           <li>
