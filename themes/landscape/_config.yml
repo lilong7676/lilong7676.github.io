@@ -35,3 +35,14 @@ twitter:
 google_plus:
 fb_admins:
 fb_app_id:
+
+# 目录配置
+toc:
+  maxdepth: 3
+  class: toc
+  slugify: transliteration
+  decodeEntities: false
+  anchor:
+    position: after
+    symbol: '####'
+    style: header-anchor
