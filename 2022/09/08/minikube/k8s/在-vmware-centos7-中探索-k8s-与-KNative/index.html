@@ -7,19 +7,22 @@
   
   <title>在 vmware centos7 中安装 minikube | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没有使用国内源。">
+  <meta name="description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-scripthttps://www.cnblogs.com/yyee/p/15071684.html 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没">
 <meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在 vmware centos7 中安装 minikube">
 <meta property="og:url" content="https://lilong7676.github.io/2022/09/08/minikube/k8s/在-vmware-centos7-中探索-k8s-与-KNative/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没有使用国内源。">
+<meta property="og:description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-scripthttps://www.cnblogs.com/yyee/p/15071684.html 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220908143016.png">
-<meta property="og:updated_time" content="2022-09-08T08:08:27.364Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909113846.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909114717.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909120236.png">
+<meta property="og:updated_time" content="2022-09-09T04:15:34.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在 vmware centos7 中安装 minikube">
-<meta name="twitter:description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没有使用国内源。">
+<meta name="twitter:description" content="参考资料：https://minikube.sigs.k8s.io/docs/start/https://docs.docker.com/engine/install/centos/#install-using-the-convenience-scripthttps://www.cnblogs.com/yyee/p/15071684.html 注意，由于我在虚拟机里走了vpn代理，所以以下命令都没">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220908143016.png">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
@@ -100,10 +103,10 @@
         
     <div id="toc">
         <strong class="sidebar-title">目录:</strong>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SSH-连接-VMware-上的-CentOS-虚拟机（可选）"><span class="toc-text">使用 SSH 连接 VMware 上的 CentOS 虚拟机（可选）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-docker-和-minikube"><span class="toc-text">安装 docker 和 minikube</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动-minikube"><span class="toc-text">启动 minikube</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#minikube-start-报错解决"><span class="toc-text">minikube start 报错解决</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-kubectl"><span class="toc-text">安装 kubectl</span></a></li></ol>
-    </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SSH-连接-VMware-上的-CentOS-虚拟机（可选）"><span class="toc-text">使用 SSH 连接 VMware 上的 CentOS 虚拟机（可选）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-docker-和-minikube"><span class="toc-text">安装 docker 和 minikube</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动-minikube"><span class="toc-text">启动 minikube</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#minikube-start-报错解决"><span class="toc-text">minikube start 报错解决</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-kubectl"><span class="toc-text">安装 kubectl</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#初步使用"><span class="toc-text">初步使用</span></a>
+    </li></div>
 
-        <p>参考资料：<br><a class="link" href="https://minikube.sigs.k8s.io/docs/start/" target="_blank" rel="noopener">https://minikube.sigs.k8s.io/docs/start/<i class="fas fa-external-link-alt"></i></a><br><a class="link" href="https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script<i class="fas fa-external-link-alt"></i></a></p>
+        <p>参考资料：<br><a href="https://minikube.sigs.k8s.io/docs/start/" target="_blank" rel="noopener">https://minikube.sigs.k8s.io/docs/start/</a><br><a href="https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/#install-using-the-convenience-script</a><br><a href="https://www.cnblogs.com/yyee/p/15071684.html" target="_blank" rel="noopener">https://www.cnblogs.com/yyee/p/15071684.html</a></p>
 <p>注意，由于我在虚拟机里走了vpn代理，所以以下命令都没有使用国内源。</p>
 <a id="more"></a>
 
@@ -124,7 +127,7 @@
 </li>
 <li><p>主机与虚拟机进行互相ping，如果ping通了，表示主机和虚拟机在同一个子网，则直接 <code>ssh root@ip</code> 即可。</p>
 </li>
-<li><p>如果没有ping通，则表示主机和虚拟机没有在一个字网，需要修改网络配置，可参考<a class="link" href="https://www.jianshu.com/p/f38133c1485a" target="_blank" rel="noopener">这里<i class="fas fa-external-link-alt"></i></a>进行配置。</p>
+<li><p>如果没有ping通，则表示主机和虚拟机没有在一个字网，需要修改网络配置，可参考<a href="https://www.jianshu.com/p/f38133c1485a" target="_blank" rel="noopener">这里</a>进行配置。</p>
 </li>
 </ul>
 <h3 id="安装-docker-和-minikube"><a href="#安装-docker-和-minikube" class="headerlink" title="安装 docker 和 minikube"></a>安装 docker 和 minikube</h3><ul>
@@ -137,7 +140,7 @@
 <li><p>安装 minikube</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://minikube.sigs.k8s.io/docs/start/</span></span><br><span class="line">$ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64</span><br><span class="line">$ sudo install minikube-linux-amd64 /usr/<span class="built_in">local</span>/bin/minikube</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><a class="link" href="https://minikube.sigs.k8s.io/docs/drivers/docker/#requirements" target="_blank" rel="noopener">配置 minikube(可选)<i class="fas fa-external-link-alt"></i></a></p>
+<li><p><a href="https://minikube.sigs.k8s.io/docs/drivers/docker/#requirements" target="_blank" rel="noopener">配置 minikube(可选)</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Start a cluster using the docker driver:</span></span><br><span class="line">minikube start --driver=docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># To make docker the default driver:</span></span><br><span class="line">minikube config <span class="built_in">set</span> driver docker</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -148,9 +151,35 @@
 <p>  可以通过安装旧版本的 k8s临时解决：<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  $ minikube delete</span><br><span class="line">  $ minikube start --kubernetes-version=v1.23.8 </span><br><span class="line"></span><br><span class="line">  😄  minikube v1.26.1 on Centos 7.9.2009</span><br><span class="line">✨  Automatically selected the docker driver. Other choices: ssh, none</span><br><span class="line">📌  Using Docker driver with root privileges</span><br><span class="line">👍  Starting control plane node minikube <span class="keyword">in</span> cluster minikube</span><br><span class="line">🚜  Pulling base image ...</span><br><span class="line">💾  Downloading Kubernetes v1.23.8 preload ...</span><br><span class="line">    &gt; preloaded-images-k8s-v18-v1...:  400.52 MiB / 400.52 MiB  100.00% 4.66 Mi</span><br><span class="line">    &gt; index.docker.io/kicbase/sta...:  0 B [___________________] ?% ? p/s 1m44s</span><br><span class="line">❗  minikube was unable to download gcr.io/k8s-minikube/kicbase:v0.0.33, but successfully downloaded docker.io/kicbase/stable:v0.0.33 as a fallback image</span><br><span class="line">🔥  Creating docker container (CPUs=2, Memory=2200MB) ...</span><br><span class="line">❗  This container is having trouble accessing https://k8s.gcr.io</span><br><span class="line">💡  To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/</span><br><span class="line">🐳  Preparing Kubernetes v1.23.8 on Docker 20.10.17 ...</span><br><span class="line">    ▪ Generating certificates and keys ...</span><br><span class="line">    ▪ Booting up control plane ...</span><br><span class="line">    ▪ Configuring RBAC rules ...</span><br><span class="line">🔎  Verifying Kubernetes components...</span><br><span class="line">    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5</span><br><span class="line">🌟  Enabled addons: default-storageclass, storage-provisioner</span><br><span class="line">💡  kubectl not found. If you need it, try: <span class="string">'minikube kubectl -- get pods -A'</span></span><br><span class="line">🏄  Done! kubectl is now configured to use <span class="string">"minikube"</span> cluster and <span class="string">"default"</span> namespace by default</span><br></pre></td></tr></table></figure></p>
 <p>  此时执行 <code>$ docker ps</code>会发现 minikube 其实就是docker中运行的容器。<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  $ docker ps</span><br><span class="line">  CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS                                                                                                                                  NAMES</span><br><span class="line">c07efbc6d848   kicbase/stable:v0.0.33   <span class="string">"/usr/local/bin/entr…"</span>   14 minutes ago   Up 14 minutes   127.0.0.1:49162-&gt;22/tcp, 127.0.0.1:49161-&gt;2376/tcp, 127.0.0.1:49160-&gt;5000/tcp, 127.0.0.1:49159-&gt;8443/tcp, 127.0.0.1:49158-&gt;32443/tcp   minikube</span><br></pre></td></tr></table></figure></p>
 <h3 id="安装-kubectl"><a href="#安装-kubectl" class="headerlink" title="安装 kubectl"></a>安装 kubectl</h3><ul>
-<li>可参考这里： <a class="link" href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/<i class="fas fa-external-link-alt"></i></a></li>
+<li>可参考这里： <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/</a></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ curl -LO <span class="string">"https://dl.k8s.io/release/<span class="variable">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl"</span></span><br><span class="line"></span><br><span class="line">$ sudo install -o root -g root -m 0755 kubectl /usr/<span class="built_in">local</span>/bin/kubectl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看版本验证安装是否成功</span></span><br><span class="line">$ kubectl version --client</span><br></pre></td></tr></table></figure>
+
+<h1 id="初步使用"><a href="#初步使用" class="headerlink" title="初步使用"></a>初步使用</h1><ul>
+<li><p>使用 <code>kubectl</code> 查看当前集群</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get po -A</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909113846.png" alt="使用 kubectl 查看当前集群"></p>
+</li>
+<li><p>minikube 集成了 k8s Dashboard,可以在浏览器中查看当前集群情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ minikube dashboard</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909114717.png" alt="minikube dashboard"></p>
+<p>暴露端口给外部访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl proxy --address=<span class="string">'0.0.0.0'</span> --<span class="built_in">disable</span>-filter=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220909120236.png" alt="暴露端口给外部访问"></p>
+<p>发现暴露了8001端口给外部访问，但是此时在宿主机无法打开 <code>http://centos_ip:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/</code> ,因为防火墙的配置不允许，所以👇下面是配置防火墙的步骤。</p>
+</li>
+<li><p>配置 centos 防火墙以暴露指定端口给宿主机访问（<a href="https://www.cnblogs.com/yyee/p/15071684.html" target="_blank" rel="noopener">参考自这里</a>）</p>
+<p>因为我是本地用的虚拟机安装的 centos7，所以上面的 dashboard 页面无法直接在宿主机内打开，所以参考这里修改centos 防火墙即可</p>
+<p>首先前提是我的虚拟机网络走的是 NAT转发模式，以下为在虚拟机内操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置防火墙允许NAT转发</span></span><br><span class="line">$ sudo firewall-cmd --zone=public --add-masquerade --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过 ifconfig 命令查看 127.0.0.1 属于哪个网卡，我这里网卡的名字是 lo</span></span><br><span class="line"><span class="comment"># 下面把 lo 网卡添加到 trusted 域</span></span><br><span class="line">$ sudo firewall-cmd --permanent --zone=trusted --change-interface=lo</span><br><span class="line"></span><br><span class="line"><span class="comment"># PS: 我这里顺便把 docker0 网卡也添加到信任域了，方便以后访问docker内的端口</span></span><br><span class="line"><span class="comment"># sudo firewall-cmd --permanent --zone=trusted --change-interface=docker0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开放 8001 端口（minikube dashboard proxy 默认为 8001 端口）</span></span><br><span class="line">$ sudo firewall-cmd --add-port=8001/tcp --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启防火墙即可</span></span><br><span class="line">$ firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p>此时在宿主机即可访问虚拟机8001端口： <code>http://vm_ip:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default</code></p>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
