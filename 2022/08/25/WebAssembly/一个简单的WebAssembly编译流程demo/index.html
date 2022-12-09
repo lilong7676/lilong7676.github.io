@@ -105,7 +105,7 @@
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前置条件"><span class="toc-text">前置条件:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译-emsdk"><span class="toc-text">编译 emsdk:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译一个demo试试吧："><span class="toc-text">编译一个demo试试吧：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尝试加入一个第三方库进行编译"><span class="toc-text">尝试加入一个第三方库进行编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续再尝试将-flutter-jsdom-的-bridge-层打包为-wasm，需要先好好消化下😂"><span class="toc-text">后续再尝试将 flutter-jsdom 的 bridge 层打包为 wasm，需要先好好消化下😂</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参考资料："><span class="toc-text">参考资料：</span></a></li></ol></li></ol>
     </div>
 
-        <p>记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 <a class="link" href="https://github.com/emscripten-core/emsdk" target="_blank" rel="noopener">官方github<i class="fas fa-external-link-alt"></i></a>。</p>
+        <p>记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 <a href="https://github.com/emscripten-core/emsdk" target="_blank" rel="noopener">官方github</a>。</p>
 <a id="more"></a>
 
 <h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件:"></a>前置条件:</h2><p>git、cmake、Xcode(主要是llvm, linux为GCC)、Python 2.7.x</p>
@@ -132,9 +132,9 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ emrun --no_browser --port 8080 .</span><br></pre></td></tr></table></figure>
 
 <ol start="4">
-<li>在浏览器打开 <a class="link" href="http://0.0.0.0:8080/hello.html：" target="_blank" rel="noopener">http://0.0.0.0:8080/hello.html：<i class="fas fa-external-link-alt"></i></a><br><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180019.png" alt="效果图"></li>
+<li>在浏览器打开 <a href="http://0.0.0.0:8080/hello.html：" target="_blank" rel="noopener">http://0.0.0.0:8080/hello.html：</a><br><img src="https://raw.githubusercontent.com/lilong7676/Picture/master/blog/image/20220825180019.png" alt="效果图"></li>
 </ol>
-<h2 id="尝试加入一个第三方库进行编译"><a href="#尝试加入一个第三方库进行编译" class="headerlink" title="尝试加入一个第三方库进行编译"></a>尝试加入一个第三方库进行编译</h2><p>这里我选择将 <a class="link" href="https://github.com/DaveGamble/cJSON" target="_blank" rel="noopener">cJSON<i class="fas fa-external-link-alt"></i></a> 这个库编译为 wasm:</p>
+<h2 id="尝试加入一个第三方库进行编译"><a href="#尝试加入一个第三方库进行编译" class="headerlink" title="尝试加入一个第三方库进行编译"></a>尝试加入一个第三方库进行编译</h2><p>这里我选择将 <a href="https://github.com/DaveGamble/cJSON" target="_blank" rel="noopener">cJSON</a> 这个库编译为 wasm:</p>
 <ol>
 <li><p>从 github 下载 cJSOM 源码到项目的 vendor 文件夹</p>
 </li>
@@ -159,17 +159,17 @@
 
 </li>
 </ol>
-<h2 id="后续再尝试将-flutter-jsdom-的-bridge-层打包为-wasm，需要先好好消化下😂"><a href="#后续再尝试将-flutter-jsdom-的-bridge-层打包为-wasm，需要先好好消化下😂" class="headerlink" title="后续再尝试将 flutter-jsdom 的 bridge 层打包为 wasm，需要先好好消化下😂"></a>后续再尝试将 <a class="link" href="https://github.com/lilong7676/flutter-jsdom" target="_blank" rel="noopener">flutter-jsdom<i class="fas fa-external-link-alt"></i></a> 的 bridge 层打包为 wasm，需要先好好消化下😂</h2><h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h4><ol>
-<li><p><a class="link" href="https://cloud.tencent.com/developer/news/690454" target="_blank" rel="noopener">https://cloud.tencent.com/developer/news/690454<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="后续再尝试将-flutter-jsdom-的-bridge-层打包为-wasm，需要先好好消化下😂"><a href="#后续再尝试将-flutter-jsdom-的-bridge-层打包为-wasm，需要先好好消化下😂" class="headerlink" title="后续再尝试将 flutter-jsdom 的 bridge 层打包为 wasm，需要先好好消化下😂"></a>后续再尝试将 <a href="https://github.com/lilong7676/flutter-jsdom" target="_blank" rel="noopener">flutter-jsdom</a> 的 bridge 层打包为 wasm，需要先好好消化下😂</h2><h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h4><ol>
+<li><p><a href="https://cloud.tencent.com/developer/news/690454" target="_blank" rel="noopener">https://cloud.tencent.com/developer/news/690454</a></p>
 </li>
-<li><p><a class="link" href="http://webassembly.org.cn/getting-started/developers-guide/" target="_blank" rel="noopener">http://webassembly.org.cn/getting-started/developers-guide/<i class="fas fa-external-link-alt"></i></a></p>
+<li><p><a href="http://webassembly.org.cn/getting-started/developers-guide/" target="_blank" rel="noopener">http://webassembly.org.cn/getting-started/developers-guide/</a></p>
 </li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="cl7ssjbe90006fsckvcferkyb" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="clbgcnbzy0003mpckbwx7yckh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li></ul>
@@ -237,7 +237,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
     </div>
   </div>
 
@@ -250,7 +250,11 @@
       <ul>
         
           <li>
-            <a href="/2022/09/08/Knative/初步安装-Knative/">初步安装 knative</a>
+            <a href="/2022/12/09/uncategorized/使用-babel-实现一个自创的-js-语法/">使用 babel 实现一个自创的 js 语法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/23/uncategorized/babel的原理及插件的编写（简要）/">babel 的原理及插件的编写（简要）</a>
           </li>
         
           <li>
@@ -258,15 +262,11 @@
           </li>
         
           <li>
+            <a href="/2022/09/08/Knative/初步安装-Knative/">初步安装 knative</a>
+          </li>
+        
+          <li>
             <a href="/2022/09/01/flutter/flutter中通过ffi使用quickjs/">flutter中通过ffi使用quickjs</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/">web前端Proxy沙箱实现时需注意RegExp等原生对象问题</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/">记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题</a>
           </li>
         
       </ul>
