@@ -1,8 +1,8 @@
 ---
 title: babel 的原理及插件的编写（简要）
 date: 2022-11-23 10:39:06
-tags:
-categories:
+tags: Babel
+categories: javascript
 ---
 
 
