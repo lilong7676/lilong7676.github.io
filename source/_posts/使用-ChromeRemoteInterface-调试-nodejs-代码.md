@@ -1,8 +1,8 @@
 ---
 title: 使用 ChromeRemoteInterface 调试 nodejs 代码
 date: 2023-01-10 14:59:29
-tags:
-categories:
+tags: ChromeDevTools
+categories: javascript
 ---
 
 > 最近在调研如何远程调试一个 nodejs 进程，大致调研路径是 Chome DevTolls -> Chrome debugging protocol -> chrome-remote-interface，本文重点介绍下 chrome-remote-interface 的简单使用。 
@@ -94,7 +94,7 @@ CDP(async (client) => {
     //   console.error('Network attach failed', error);
     // }
 
-    // 使用
+    // 远程执行代码
     const testValue = await Runtime.evaluate({
       expression: "eval(1 + 1)",
     });
@@ -120,3 +120,4 @@ CDP(async (client) => {
 - [JSON-RPC 是什么](https://www.jianshu.com/p/49cd5c9a1664)
 - [node debugging guide](https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options)
 - [http-inspector — a DevTools Network tab for Node.js process](https://garnik.medium.com/http-inspector-a-devtools-network-tab-for-node-js-process-5a008d17bf28)
+- [有关 node 不支持调试 network 的讨论](https://github.com/nodejs/diagnostics/issues/75)
