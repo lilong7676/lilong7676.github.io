@@ -7,7 +7,7 @@
     "start": "npm run serve",
     "serve": "hexo server -p 5000",
     "build": "npm run clean && hexo generate",
-    "deploy": "npm run clean && hexo generate --deploy",
+    "deploy": "npm run clean && npx hexo generate --deploy",
     "clean": "rm -rf ./public/*"
   },
   "hexo": {
