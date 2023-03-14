@@ -21,7 +21,7 @@ ssh -t username@host 'commands'
 
 比如我想看下 root 目录有哪些文件：
 ```bash
-ssh -i ~/.ssh/tencent_ecs root@example.com "ls -a"
+ssh -i ~/.ssh/tencent_ecs root@example.com "ls -a; echo \"done\""
 ```
 ![](https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230314105027.png?x-oss-process=image/resize,w_800)
 <!-- more -->
