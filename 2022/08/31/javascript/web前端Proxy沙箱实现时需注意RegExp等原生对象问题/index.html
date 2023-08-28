@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>web前端Proxy沙箱实现时需注意RegExp等原生对象问题 | 费默 - 分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="问题起因起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于： 12345const code = `    const r = /^(\\d&amp;#123;4&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)$/    r.exec(&apos;2022-08-31&apos;)    return RegExp.$1">
+<meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web前端Proxy沙箱实现时需注意RegExp等原生对象问题">
+<meta property="og:url" content="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/index.html">
+<meta property="og:site_name" content="费默 - 分享">
+<meta property="og:description" content="问题起因起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于： 12345const code = `    const r = /^(\\d&amp;#123;4&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)$/    r.exec(&apos;2022-08-31&apos;)    return RegExp.$1">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2023-06-08T06:26:43.565Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="web前端Proxy沙箱实现时需注意RegExp等原生对象问题">
+<meta name="twitter:description" content="问题起因起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于： 12345const code = `    const r = /^(\\d&amp;#123;4&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)-(\\d&amp;#123;1,2&amp;#125;)$/    r.exec(&apos;2022-08-31&apos;)    return RegExp.$1">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just run.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-web前端Proxy沙箱实现时需注意RegExp等原生对象问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" class="article-date">
+  <time datetime="2022-08-31T06:52:01.000Z" itemprop="datePublished">2022-08-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      web前端Proxy沙箱实现时需注意RegExp等原生对象问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题起因"><span class="toc-text">问题起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reproduce-Step"><span class="toc-text">Reproduce Step :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#⚠️"><span class="toc-text">⚠️</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类似的原生对象，如-eval-等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。"><span class="toc-text">类似的原生对象，如 eval 等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。</span></a></li></ol></li></ol>
+    </div>
+
+        <h2 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h2><p>起因是一个前端js沙箱的实现中，发现通过沙箱执行代码中访问 RegExp.$n 的值一直是空字符串，类似于：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">    const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/</span></span><br><span class="line"><span class="string">    r.exec('2022-08-31')</span></span><br><span class="line"><span class="string">    return RegExp.$1;`</span>;</span><br><span class="line">evalScriptInSandbox(code);</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>正常情况下，<code>evalScriptInSandbox(code)</code> 应该返回 <code>&#39;2022&#39;</code>,但是执行发现只会返回空字符串，最后发现是 RegExp 的执行上下文问题。</p>
+<p>因为沙箱的实现类似于这种：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> evalScriptSandbox = <span class="function">(<span class="params">code, fakeWindow</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> resolver = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">`</span></span><br><span class="line"><span class="string">    return function(window) &#123;</span></span><br><span class="line"><span class="string">      with(window) &#123;</span></span><br><span class="line"><span class="string">        try &#123;</span></span><br><span class="line"><span class="string">          return (function() &#123;</span></span><br><span class="line"><span class="string">            "use strict";</span></span><br><span class="line"><span class="string">            <span class="subst">$&#123;code&#125;</span></span></span><br><span class="line"><span class="string">          &#125;)();</span></span><br><span class="line"><span class="string">        &#125; catch(e) &#123;</span></span><br><span class="line"><span class="string">          console.log(e);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  `</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 正是这里的 call(fakeWindow)导致 RegExp 执行时的上下文是 fakeWindow </span></span><br><span class="line">  <span class="comment">// 而不是真正的宿主 window,导致 bug 产生</span></span><br><span class="line">  <span class="keyword">return</span> resolver().call(fakeWindow, fakeWindow);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>解决方式就是访问<code>fakeWindow</code>中的 <code>RegExp</code> 对象时，需要返回宿主环境的 <code>RegExp</code>，这和浏览器的内部实现有关系，暂时没发现其他的解决方式。</p>
+<h2 id="Reproduce-Step"><a href="#Reproduce-Step" class="headerlink" title="Reproduce Step :"></a>Reproduce Step :</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/lilong7676/js-regexp-bug.git</span><br><span class="line">$ <span class="built_in">cd</span> js-regexp-bug</span><br><span class="line">$ npm i</span><br><span class="line">$ npm run start</span><br></pre></td></tr></table></figure>
+
+<h2 id="⚠️"><a href="#⚠️" class="headerlink" title="⚠️"></a>⚠️</h2><p>⚠️另外需要注意，在 eval、Function 构造函数中执行正则表达式时，需要转义反斜线，即:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\d&#123;4&#125;)-(\d&#123;1,2&#125;)-(\d&#123;1,2&#125;)$/</span></span><br><span class="line"><span class="string">r.exec('2022-08-31'); // null</span></span><br><span class="line"><span class="string">console.log(RegExp.$1) // ''</span></span><br><span class="line"><span class="string">`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在 eval 中需要写为:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">`</span></span><br><span class="line"><span class="string">const r = /^(\\d&#123;4&#125;)-(\\d&#123;1,2&#125;)-(\\d&#123;1,2&#125;)$/</span></span><br><span class="line"><span class="string">r.exec('2022-08-31');</span></span><br><span class="line"><span class="string">console.log(RegExp.$1); // 2022</span></span><br><span class="line"><span class="string">`</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="类似的原生对象，如-eval-等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。"><a href="#类似的原生对象，如-eval-等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。" class="headerlink" title="类似的原生对象，如 eval 等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。"></a>类似的原生对象，如 eval 等，也会在这种沙箱的实现方式中出现作用域问题，需要注意。</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="clkc7yf7x0006cnxkqm1vk4br" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/01/flutter/flutter中通过ffi使用quickjs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          flutter中通过ffi使用quickjs
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">记 RegExp 字面量形式在 eval 及 new Function里的行为异常问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AsyncLocalStorage/" style="font-size: 10px;">AsyncLocalStorage</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/ChromeDevTools/" style="font-size: 15px;">ChromeDevTools</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Indexeddb/" style="font-size: 10px;">Indexeddb</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/">nodejs中 的 AsyncLocalStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/">编译并运行 Chrome Devtools Frontend</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 lilong7676<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

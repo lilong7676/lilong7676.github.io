@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>使用 babel 实现一个自创的 js 语法 | 费默 - 分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="用 babel 实现用 @!标记一个函数时，将为函数自动加上调用日志打印的功能123456// 如function @! foo() &amp;#123;&amp;#125;// 转化为function foo() &amp;#123;    console.log(&apos;function name:&apos;, &apos;foo&apos;, &apos;date:&apos;, Date.now())&amp;#125;">
+<meta name="keywords" content="Babel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 babel 实现一个自创的 js 语法">
+<meta property="og:url" content="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/index.html">
+<meta property="og:site_name" content="费默 - 分享">
+<meta property="og:description" content="用 babel 实现用 @!标记一个函数时，将为函数自动加上调用日志打印的功能123456// 如function @! foo() &amp;#123;&amp;#125;// 转化为function foo() &amp;#123;    console.log(&apos;function name:&apos;, &apos;foo&apos;, &apos;date:&apos;, Date.now())&amp;#125;">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20221209155741.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20221209155905.png">
+<meta property="og:updated_time" content="2023-06-08T06:26:43.566Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 babel 实现一个自创的 js 语法">
+<meta name="twitter:description" content="用 babel 实现用 @!标记一个函数时，将为函数自动加上调用日志打印的功能123456// 如function @! foo() &amp;#123;&amp;#125;// 转化为function foo() &amp;#123;    console.log(&apos;function name:&apos;, &apos;foo&apos;, &apos;date:&apos;, Date.now())&amp;#125;">
+<meta name="twitter:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20221209155741.png">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just run.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-使用-babel-实现一个自创的-js-语法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" class="article-date">
+  <time datetime="2022-12-09T06:39:26.000Z" itemprop="datePublished">2022-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用 babel 实现一个自创的 js 语法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#用-babel-实现用-标记一个函数时，将为函数自动加上调用日志打印的功能"><span class="toc-text">用 babel 实现用 @!标记一个函数时，将为函数自动加上调用日志打印的功能</span></a></li></ol>
+    </div>
+
+        <h3 id="用-babel-实现用-标记一个函数时，将为函数自动加上调用日志打印的功能"><a href="#用-babel-实现用-标记一个函数时，将为函数自动加上调用日志打印的功能" class="headerlink" title="用 babel 实现用 @!标记一个函数时，将为函数自动加上调用日志打印的功能"></a>用 babel 实现用 <code>@!</code>标记一个函数时，将为函数自动加上调用日志打印的功能</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> @! <span class="title">foo</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="comment">// 转化为</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'function name:'</span>, <span class="string">'foo'</span>, <span class="string">'date:'</span>, <span class="built_in">Date</span>.now())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>根据<a href="https://babeljs.io/docs/en/babel-parser#output" target="_blank" rel="noopener">文档</a>可知要在 <code>packages/babel-parser</code> 里找逻辑</p>
+<p><strong>注意，请先 fork babel 源码</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 babel 源码目录里执行</span></span><br><span class="line">$ make watch <span class="comment"># 编译并 watch</span></span><br><span class="line">$ <span class="built_in">cd</span> packages/babel-parse/<span class="built_in">test</span></span><br><span class="line"><span class="comment"># 在 babel-parse 里新建单元测试文件，用来验证逻辑</span></span><br><span class="line">$ touch <span class="built_in">test</span>-parser.js</span><br></pre></td></tr></table></figure>
+
+<p>test-parser.js 内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// test-parser.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; parse &#125; <span class="keyword">from</span> <span class="string">"../lib/index.js"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getParser</span>(<span class="params">code</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// sourceType 可能的值为 "script", "module", or "unambiguous"，</span></span><br><span class="line">  <span class="comment">// 如果是 unambiguous，则 babel 会尝试判断代码中是否包含 import export 语句来确定具体类型</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> parse(code, &#123; <span class="attr">sourceType</span>: <span class="string">"module"</span> &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">describe(<span class="string">"测试自定义语法 @! parse -&gt; ast"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  it(<span class="string">"should parse"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    expect(getParser(<span class="string">`function @! foo() &#123;&#125;`</span>)()).toMatchSnapshot();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>可通过下面的命令执行 jest：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过下面的命令执行 jest</span></span><br><span class="line"> $ BABEL_ENV=<span class="built_in">test</span> node_modules/.bin/jest -u packages/babel-parser/<span class="built_in">test</span>/<span class="built_in">test</span>-parser.js</span><br></pre></td></tr></table></figure>
+
+<p> 执行结果报错信息：<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  测试自定义语法 @@ parse -&gt; ast</span><br><span class="line">    ✕ should parse</span><br><span class="line"></span><br><span class="line">测试自定义语法 @@ parse -&gt; ast &gt; should parse</span><br><span class="line">    SyntaxError: Unexpected token (1:9)</span><br><span class="line">        at instantiate (/babel-lib/packages/babel-parser/lib/parse-error/credentials.js:27:32)</span><br><span class="line">        at constructor (/babel-lib/packages/babel-parser/lib/parse-error.js:41:41)</span><br><span class="line">        at Parser.raise (/babel-lib/packages/babel-parser/lib/tokenizer/index.js:1062:19)</span><br><span class="line">        at Parser.unexpected (/babel-lib/packages/babel-parser/lib/tokenizer/index.js:1095:16)</span><br><span class="line">        at Parser.parseIdentifierName (/babel-lib/packages/babel-parser/lib/parser/expression.js:1641:18)</span><br><span class="line">        at Parser.parseIdentifier (/babel-lib/packages/babel-parser/lib/parser/expression.js:1624:23)</span><br><span class="line">        at Parser.parseFunctionId (/babel-lib/packages/babel-parser/lib/parser/statement.js:991:79)</span><br><span class="line">        at Parser.parseFunction (/babel-lib/packages/babel-parser/lib/parser/statement.js:961:22)</span><br><span class="line">        at Parser.parseFunctionStatement (/babel-lib/packages/babel-parser/lib/parser/statement.js:603:17)</span><br><span class="line">        at Parser.parseStatementContent (/babel-lib/packages/babel-parser/lib/parser/statement.js:272:21) &#123;</span><br><span class="line">      code: <span class="string">'BABEL_PARSER_SYNTAX_ERROR'</span>,</span><br><span class="line">      reasonCode: <span class="string">'UnexpectedToken'</span>,</span><br><span class="line">      loc: Position &#123; line: 1, column: 9, index: 9 &#125;,</span><br><span class="line">      pos: [Getter/Setter]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>观察错误信息，发现关键错误点在 <code>parseIdentifierName</code> 里报 <code>unexpected</code> 错误，下面调试下逻辑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packages/babel-parser/src/parser/expression.ts</span></span><br><span class="line"></span><br><span class="line"> parseIdentifierName(liberal?: boolean): string &#123;</span><br><span class="line">    <span class="keyword">let</span> name: string;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> &#123; startLoc, type &#125; = <span class="keyword">this</span>.state;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"identifier value"</span>, <span class="keyword">this</span>.state.value);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"next identifier value"</span>, <span class="keyword">this</span>.lookahead().value);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tokenIsKeywordOrIdentifier(type)) &#123;</span><br><span class="line">      name = <span class="keyword">this</span>.state.value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">this</span>.unexpected();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以问题是 babel 不认识 @! 标识符，那么处理一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packages/babel-parser/src/tokenizer/types.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> tt = &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    at: createToken(<span class="string">"@"</span>),</span><br><span class="line">    atEM: createToken(<span class="string">"@!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packages/babel-parser/src/parser/statement.ts</span></span><br><span class="line"></span><br><span class="line"> parseFunction&lt;T extends N.NormalFunction&gt;(</span><br><span class="line">    <span class="keyword">this</span>: Parser,</span><br><span class="line">    node: Undone&lt;T&gt;,</span><br><span class="line">    statement: number = FUNC_NO_FLAGS,</span><br><span class="line">    isAsync: boolean = <span class="literal">false</span>,</span><br><span class="line">  ): T &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    node.generator = <span class="keyword">this</span>.eat(tt.star);</span><br><span class="line">    <span class="comment">// 实现自定义语法 @！</span></span><br><span class="line">    node.logThisFunc = <span class="keyword">this</span>.eat(tt.atEM);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>再次执行 jest 成功:<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20221209155741.png" alt="执行成功"></p>
+<p>查看 ast 结果，logThisFunc 已标记：<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20221209155905.png" alt="查看 ast 结果"></p>
+<p>// TODO 编写插件，实现转换逻辑</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" data-id="clkc7yf89000gcnxkjxv9bt0d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/">Babel</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用 ChromeRemoteInterface 调试 nodejs 代码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/11/23/javascript/babel的原理及插件的编写（简要）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">babel 的原理及插件的编写（简要）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AsyncLocalStorage/" style="font-size: 10px;">AsyncLocalStorage</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/ChromeDevTools/" style="font-size: 15px;">ChromeDevTools</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Indexeddb/" style="font-size: 10px;">Indexeddb</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/">nodejs中 的 AsyncLocalStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/">编译并运行 Chrome Devtools Frontend</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 lilong7676<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

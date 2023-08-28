@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>使用 ChromeRemoteInterface 调试 nodejs 代码 | 费默 - 分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近在调研如何远程调试一个 nodejs 进程，大致调研路径是 Chome DevTolls -&amp;gt; Chrome debugging protocol -&amp;gt; chrome-remote-interface，本文重点介绍下 chrome-remote-interface 的简单使用。   根据其文档，这个工具主要是提供一个 js api，在连接到对应的服务端（要调试的端）后，通过 Ch">
+<meta name="keywords" content="ChromeDevTools">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 ChromeRemoteInterface 调试 nodejs 代码">
+<meta property="og:url" content="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/index.html">
+<meta property="og:site_name" content="费默 - 分享">
+<meta property="og:description" content="最近在调研如何远程调试一个 nodejs 进程，大致调研路径是 Chome DevTolls -&amp;gt; Chrome debugging protocol -&amp;gt; chrome-remote-interface，本文重点介绍下 chrome-remote-interface 的简单使用。   根据其文档，这个工具主要是提供一个 js api，在连接到对应的服务端（要调试的端）后，通过 Ch">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230111114509.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110170510.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110171113.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110172257.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230111113918.png">
+<meta property="og:updated_time" content="2023-06-08T06:26:43.566Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 ChromeRemoteInterface 调试 nodejs 代码">
+<meta name="twitter:description" content="最近在调研如何远程调试一个 nodejs 进程，大致调研路径是 Chome DevTolls -&amp;gt; Chrome debugging protocol -&amp;gt; chrome-remote-interface，本文重点介绍下 chrome-remote-interface 的简单使用。   根据其文档，这个工具主要是提供一个 js api，在连接到对应的服务端（要调试的端）后，通过 Ch">
+<meta name="twitter:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230111114509.png">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just run.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-使用-ChromeRemoteInterface-调试-nodejs-代码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" class="article-date">
+  <time datetime="2023-01-10T06:59:29.000Z" itemprop="datePublished">2023-01-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用 ChromeRemoteInterface 调试 nodejs 代码
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#准备待调试的-nodejs-实例"><span class="toc-text">准备待调试的 nodejs 实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过-chrome-remote-interface-远程调试-nodejs"><span class="toc-text">通过 chrome-remote-interface 远程调试 nodejs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+
+        <blockquote>
+<p>最近在调研如何远程调试一个 nodejs 进程，大致调研路径是 Chome DevTolls -&gt; Chrome debugging protocol -&gt; chrome-remote-interface，本文重点介绍下 chrome-remote-interface 的简单使用。 </p>
+</blockquote>
+<p>根据其<a href="https://github.com/cyrus-and/chrome-remote-interface" target="_blank" rel="noopener">文档</a>，这个工具主要是提供一个 js api，在连接到对应的服务端（要调试的端）后，通过 Chrome Debugging Protocol 与之交互。  </p>
+<p>所以其基本的使用分为以下几个步骤：  </p>
+<ul>
+<li>启动 nodejs 实例，并打开调试模式, eg. <code>node --inspect-brk=9222 for-insepct.js</code></li>
+<li>通过 CDP 连接到远程调试实例</li>
+<li>通过 CDP Client 操作远程调试实例</li>
+</ul>
+<a id="more"></a>
+
+<h4 id="准备待调试的-nodejs-实例"><a href="#准备待调试的-nodejs-实例" class="headerlink" title="准备待调试的 nodejs 实例"></a>准备待调试的 nodejs 实例</h4><p>先新建 <code>for-inspect.js</code>，可以写入任意可执行的代码：  </p>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230111114509.png" alt="for-inspect.js"></p>
+<p>执行代码，附加 <code>--inspect-brk=9222</code> 调试参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node --inspect-brk=9222 <span class="keyword">for</span>-insepct.js</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110170510.png" alt="执行结果"><br>有关 inspect-brk 参数的作用可以参考 <a href="https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options" target="_blank" rel="noopener">node文档</a>，简单来说就是打开调试模式，并在代码首行断点执行，默认实例调试地址为 localhost:9229<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110171113.png" alt="inspect-brk 参数"> </p>
+<p>此时，nodejs 已经在 <code>localhost:9222</code> 上启动了调试实例，可以通过访问 <code>http://localhost:9222/json</code> 查看详细信息:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[ &#123;</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">"node.js instance"</span>,</span><br><span class="line">  <span class="attr">"devtoolsFrontendUrl"</span>: <span class="string">"devtools://devtools/bundled/js_app.html?experiments=true&amp;v8only=true&amp;ws=localhost:9222/4d7174b7-e4cf-4d60-84c5-80f3eed2477d"</span>,</span><br><span class="line">  <span class="attr">"devtoolsFrontendUrlCompat"</span>: <span class="string">"devtools://devtools/bundled/inspector.html?experiments=true&amp;v8only=true&amp;ws=localhost:9222/4d7174b7-e4cf-4d60-84c5-80f3eed2477d"</span>,</span><br><span class="line">  <span class="attr">"faviconUrl"</span>: <span class="string">"https://nodejs.org/static/images/favicons/favicon.ico"</span>,</span><br><span class="line">  <span class="attr">"id"</span>: <span class="string">"4d7174b7-e4cf-4d60-84c5-80f3eed2477d"</span>,</span><br><span class="line">  <span class="attr">"title"</span>: <span class="string">"for-insepct.js"</span>,</span><br><span class="line">  <span class="attr">"type"</span>: <span class="string">"node"</span>,</span><br><span class="line">  <span class="attr">"url"</span>: <span class="string">"file:///Users/lilonglong/Desktop/long_git/chrome-devtools-analysis/for-insepct.js"</span>,</span><br><span class="line">  <span class="attr">"webSocketDebuggerUrl"</span>: <span class="string">"ws://localhost:9222/4d7174b7-e4cf-4d60-84c5-80f3eed2477d"</span></span><br><span class="line">&#125; ]</span><br></pre></td></tr></table></figure>
+
+<p>可通过 Chrome 直接访问 <code>devtoolsFrontendUrl</code>:
+<img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230110172257.png" alt="Chrome 访问 devtoolsFrontendUrl">  </p>
+<p>当然，可以通过上面的 Chrome 来调试 nodejs 代码，所以此方案不是重点，重点是如何通过代码来远程调试 nodejs 代码。</p>
+<h4 id="通过-chrome-remote-interface-远程调试-nodejs"><a href="#通过-chrome-remote-interface-远程调试-nodejs" class="headerlink" title="通过 chrome-remote-interface 远程调试 nodejs"></a>通过 chrome-remote-interface 远程调试 nodejs</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cdp.js</span></span><br><span class="line"><span class="keyword">const</span> CDP = <span class="built_in">require</span>(<span class="string">"chrome-remote-interface"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过默认的连接配置，连接到对应的 调试实例（inspector agent）</span></span><br><span class="line">CDP(<span class="keyword">async</span> (client) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 连接成功，通过 CDP client 即可操作调试实例</span></span><br><span class="line">  <span class="keyword">const</span> &#123; Debugger, Runtime, Network &#125; = client;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 监听 scriptParsed 事件，拿到 script source code</span></span><br><span class="line">    Debugger.on(<span class="string">"scriptParsed"</span>, <span class="keyword">async</span> (params) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; scriptId, url &#125; = params;</span><br><span class="line">      <span class="comment">// console.log(`scriptId: $&#123;scriptId&#125;, url: $&#123;url&#125;`);</span></span><br><span class="line">      <span class="keyword">if</span> (url.startsWith(<span class="string">"file://"</span>)) &#123;</span><br><span class="line">        <span class="keyword">const</span> source = <span class="keyword">await</span> client.Debugger.getScriptSource(&#123; scriptId &#125;);</span><br><span class="line">        <span class="comment">// 打印获取到的 script 源码</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"script source"</span>, source);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监听进入到断点事件</span></span><br><span class="line">    Debugger.on(<span class="string">"paused"</span>, (pausedEvent) =&gt; &#123;</span><br><span class="line">      <span class="comment">// pausedEvent 里面包含当前断点的位置以及 callFrames 信息等</span></span><br><span class="line">      <span class="comment">// console.log('pausedEvent ', pausedEvent);</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调试实例如果在等待附加调试器，则先继续运行调试实例</span></span><br><span class="line">    <span class="keyword">await</span> Runtime.runIfWaitingForDebugger();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 请求允许使用 agent 的 Debugger 功能</span></span><br><span class="line">    <span class="keyword">await</span> Debugger.enable();</span><br><span class="line">    <span class="comment">// 请求允许使用 agent 的 Runtime 功能</span></span><br><span class="line">    <span class="keyword">await</span> Runtime.enable();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// try &#123;</span></span><br><span class="line">    <span class="comment">//   // 网络请求域，这里注释的原因是 nodejs v8 不支持调试 Network 域</span></span><br><span class="line">    <span class="comment">//   await Network.enable(&#123; maxPostDataSize: 65536 &#125;);</span></span><br><span class="line">    <span class="comment">// &#125; catch (error) &#123;</span></span><br><span class="line">    <span class="comment">//   console.error('Network attach failed', error);</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 远程执行代码</span></span><br><span class="line">    <span class="keyword">const</span> testValue = <span class="keyword">await</span> Runtime.evaluate(&#123;</span><br><span class="line">      expression: <span class="string">"eval(1 + 1)"</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"evaluate result"</span>, testValue);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(err);</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    client.close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).on(<span class="string">"error"</span>, (err) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230111113918.png" alt="node cdp.js"></p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://chromedevtools.github.io/devtools-protocol/v8/" target="_blank" rel="noopener">v8 CDP 文档</a></li>
+<li><a href="https://blog.cloudflare.com/better-workers-debugging-with-a-network-panel/" target="_blank" rel="noopener">Cloudflare Worker Debugger 设计</a></li>
+<li><a href="https://www.jianshu.com/p/49cd5c9a1664" target="_blank" rel="noopener">JSON-RPC 是什么</a></li>
+<li><a href="https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options" target="_blank" rel="noopener">node debugging guide</a></li>
+<li><a href="https://garnik.medium.com/http-inspector-a-devtools-network-tab-for-node-js-process-5a008d17bf28" target="_blank" rel="noopener">http-inspector — a DevTools Network tab for Node.js process</a></li>
+<li><a href="https://github.com/nodejs/diagnostics/issues/75" target="_blank" rel="noopener">有关 node 不支持调试 network 的讨论</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" data-id="clkc7yf82000dcnxk1f10x4jo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          编译并运行 Chrome Devtools Frontend
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用 babel 实现一个自创的 js 语法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AsyncLocalStorage/" style="font-size: 10px;">AsyncLocalStorage</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/ChromeDevTools/" style="font-size: 15px;">ChromeDevTools</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Indexeddb/" style="font-size: 10px;">Indexeddb</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/">nodejs中 的 AsyncLocalStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/">编译并运行 Chrome Devtools Frontend</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 lilong7676<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

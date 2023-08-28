@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>如何构建并发布自己的docker镜像  | 费默 - 分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近想在云服务器上部署一个自己的 nginx 服务，通过docker 部署最方便。之前也发布过自己的docker镜像，但是时间长了老是忘记具体的命令是啥，这里做一个笔记记录下。   构建镜像docker cli 提供了两个命令来完成构建\发布： 12docker build # 构建镜像docker pull/push # 拉取/推送镜像  整体流程参考下图：    docker build 构建">
+<meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何构建并发布自己的docker镜像 ">
+<meta property="og:url" content="https://lilong7676.github.io/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/index.html">
+<meta property="og:site_name" content="费默 - 分享">
+<meta property="og:description" content="最近想在云服务器上部署一个自己的 nginx 服务，通过docker 部署最方便。之前也发布过自己的docker镜像，但是时间长了老是忘记具体的命令是啥，这里做一个笔记记录下。   构建镜像docker cli 提供了两个命令来完成构建\发布： 12docker build # 构建镜像docker pull/push # 拉取/推送镜像  整体流程参考下图：    docker build 构建">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228143743.png?x-oss-process=image/resize,w_800">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228145327.png?x-oss-process=image/resize,w_800">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228150507.png?x-oss-process=image/resize,w_800">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228151436.png?x-oss-process=image/resize,w_800">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228151455.png?x-oss-process=image/resize,w_800">
+<meta property="og:updated_time" content="2023-06-08T06:26:43.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何构建并发布自己的docker镜像 ">
+<meta name="twitter:description" content="最近想在云服务器上部署一个自己的 nginx 服务，通过docker 部署最方便。之前也发布过自己的docker镜像，但是时间长了老是忘记具体的命令是啥，这里做一个笔记记录下。   构建镜像docker cli 提供了两个命令来完成构建\发布： 12docker build # 构建镜像docker pull/push # 拉取/推送镜像  整体流程参考下图：    docker build 构建">
+<meta name="twitter:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228143743.png?x-oss-process=image/resize,w_800">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just run.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-如何构建并发布自己的docker镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" class="article-date">
+  <time datetime="2023-02-28T06:28:21.000Z" itemprop="datePublished">2023-02-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何构建并发布自己的docker镜像 
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#构建镜像"><span class="toc-text">构建镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-build-构建镜像"><span class="toc-text">docker build 构建镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布镜像"><span class="toc-text">发布镜像</span></a></li></ol>
+    </div>
+
+        <p>最近想在云服务器上部署一个自己的 nginx 服务，通过docker 部署最方便。之前也发布过自己的docker镜像，但是时间长了老是忘记具体的命令是啥，这里做一个笔记记录下。  </p>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><p><code>docker cli</code> 提供了两个命令来完成构建\发布：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build <span class="comment"># 构建镜像</span></span><br><span class="line">docker pull/push <span class="comment"># 拉取/推送镜像</span></span><br></pre></td></tr></table></figure>
+
+<p>整体流程参考下图：  </p>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228143743.png?x-oss-process=image/resize,w_800" alt="docker构建发布流程"></p>
+<h3 id="docker-build-构建镜像"><a href="#docker-build-构建镜像" class="headerlink" title="docker build 构建镜像"></a>docker build 构建镜像</h3><p>首先命令格式<a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank" rel="noopener">来自文档</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [OPTIONS] PATH | URL | -</span><br></pre></td></tr></table></figure>
+
+<p><code>docker build</code>是利用 Dockerfile 内的指令来构建镜像。通常我们会把 Dockerfile 也加入版本管理，所以对镜像的修改操作也会有记录，这相比 <code>docker commit</code>的黑箱操作好很多。Dockerfile 就不细讲了。</p>
+<a id="more"></a>
+
+<p>下面就以发布一个自定义配置的 nginx 镜像为例子，记录一下操作步骤:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir nginx &amp;&amp; <span class="built_in">cd</span> nginx</span><br><span class="line">vi Dockerfile</span><br><span class="line">```  </span><br><span class="line">输入如下内容：</span><br><span class="line">![](https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228145132.png?x-oss-process=image/resize,w_800)  </span><br><span class="line"></span><br><span class="line">构建镜像：</span><br><span class="line">```bash</span><br><span class="line">docker build -t lilong7676/nginx:v1 .</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过以下命令打标签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker tag <span class="built_in">local</span>-image:tagname new-repo:tagname</span><br><span class="line"><span class="comment"># 即</span></span><br><span class="line">docker tag nginx:v1 lilong7676/nginx:v1</span><br></pre></td></tr></table></figure>
+
+<p>构建完成后，查看本地镜像列表，可以看到已经打上了标签v1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image list</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228145327.png?x-oss-process=image/resize,w_800" alt></p>
+<h2 id="发布镜像"><a href="#发布镜像" class="headerlink" title="发布镜像"></a>发布镜像</h2><p>登陆 <a href="https://hub.docker.com/" target="_blank" rel="noopener">docker hub</a>，创建仓库<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228150507.png?x-oss-process=image/resize,w_800" alt></p>
+<p>发布镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push lilong7676/nginx:v1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228151436.png?x-oss-process=image/resize,w_800" alt>  </p>
+<p>docker hub查看：</p>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228151455.png?x-oss-process=image/resize,w_800" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" data-id="clkc7yf8l000xcnxkz9ffahsm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用peerjs实现一个基于webrtc的简单远程网络摄像头
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">编译并运行 Chrome Devtools Frontend</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AsyncLocalStorage/" style="font-size: 10px;">AsyncLocalStorage</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/ChromeDevTools/" style="font-size: 15px;">ChromeDevTools</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Indexeddb/" style="font-size: 10px;">Indexeddb</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/">nodejs中 的 AsyncLocalStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/">编译并运行 Chrome Devtools Frontend</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 lilong7676<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
