@@ -152,5 +152,5 @@ http.get("http://localhost:8080");
 // 1: end
 ```
 
-## 实现原理 TODO
-
+## 总结  
+主要是简单了解了下 nodejs 中 AsyncLocalStorage 的初步使用，当然更深层次的理解还需要具体的业务场景来体验。
