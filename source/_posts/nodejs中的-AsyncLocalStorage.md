@@ -11,12 +11,14 @@ categories: javascript
 根据 Node.js [官方文档](https://nodejs.org/docs/latest-v14.x/api/async_hooks.html#async_hooks_class_asynclocalstorage)："This class is used to create asynchronous state within callbacks and promise chains. It allows storing data throughout the lifetime of a web request or any other asynchronous duration. It is similar to thread-local storage in other languages."，
 
 为了进一步简化解释，AsyncLocalStorage 允许你在执行异步函数时存储状态，然后使其可用于该函数中的所有代码路径。
+<!-- more -->
 
 ### 场景：一个案例引入
 
 如何实现请求的链路追踪？就是说如何确定一个Request从发起到返回处理结束过程中的所有调用路径？一般是通过发起方携带一个唯一请求标识，可以叫traceId，以此来实现链路追踪，实现日志溯源等。
 
 ### 如何实现请求的链路追踪机制？
+
 
 #### 方案一：全局变量 globalTraceId ？
 ```javascript
@@ -58,7 +60,6 @@ server.listen(3000, () => {
 
 这里的会出现的问题是由于nodejs单线程执行，第一个请求进来的时候，globalTraceId被赋值，然后进入到异步检查用户cookie的逻辑中，此时node的main stack是空的，事件循环会执行处理下一个请求。此时就会导致globalTraceId被覆写，导致第一个请求的异步检查中错误上报的globalTraceId是错误的。
 
-<!-- more -->
 
 #### 方案二：直接透传参数
 ```javascript
