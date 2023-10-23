@@ -5,20 +5,20 @@
   
 
   
-  <title>iOS逆向学习 | 费默 - 分享</title>
+  <title>jest单元测试中如何mock模块 | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
-<meta name="keywords" content="iOS">
+  <meta name="description" content="问题背景 在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？">
+<meta name="keywords" content="unit test">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS逆向学习">
-<meta property="og:url" content="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/index.html">
+<meta property="og:title" content="jest单元测试中如何mock模块">
+<meta property="og:url" content="https://lilong7676.github.io/2023/10/23/javascript/jest单元测试中如何mock模块/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta property="og:description" content="问题背景 在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2023-06-08T06:26:43.565Z">
+<meta property="og:updated_time" content="2023-10-23T06:44:33.335Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS逆向学习">
-<meta name="twitter:description" content="参考资料：   2019年iOS逆向最新学习资料（一）：理论基础和工具准备  iOS逆向, 基础工具之LLDB和debugserver debugserver+lldb使用 MonkeyDev 文档 Cycript 基本使用 小谷的足迹2 – iOS逆向安防从入门到秃头 lldb插件 强大的调试神器Chisel">
+<meta name="twitter:title" content="jest单元测试中如何mock模块">
+<meta name="twitter:description" content="问题背景 在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
   
@@ -69,14 +69,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-iOS逆向学习" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-jest单元测试中如何mock模块" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/05/09/iOS/iOS逆向学习/" class="article-date">
-  <time datetime="2021-05-09T08:20:20.000Z" itemprop="datePublished">2021-05-09</time>
+    <a href="/2023/10/23/javascript/jest单元测试中如何mock模块/" class="article-date">
+  <time datetime="2023-10-23T06:02:52.000Z" itemprop="datePublished">2023-10-23</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
   </div>
 
   </div>
@@ -87,7 +87,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS逆向学习
+      jest单元测试中如何mock模块
     </h1>
   
 
@@ -98,30 +98,36 @@
         
     <div id="toc">
         <strong class="sidebar-title">目录:</strong>
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题背景"><span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方式"><span class="toc-text">解决方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
     </div>
 
-        <blockquote>
-<p>参考资料：</p>
+        <h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><blockquote>
+<p>在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？</p>
 </blockquote>
-<ul>
-<li><a href="https://www.jianshu.com/p/f229f8df3220" target="_blank" rel="noopener">2019年iOS逆向最新学习资料（一）：理论基础和工具准备
-</a></li>
-<li><a href="https://www.jianshu.com/p/8d42d71fb9e1" target="_blank" rel="noopener">iOS逆向, 基础工具之LLDB和debugserver</a></li>
-<li><a href="https://juejin.cn/post/6844904094360961037" target="_blank" rel="noopener">debugserver+lldb使用</a></li>
-<li><a href="https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">MonkeyDev 文档</a></li>
-<li><a href="https://www.jianshu.com/p/991b13c10c1f" target="_blank" rel="noopener">Cycript 基本使用</a></li>
-<li><a href="https://juejin.cn/post/6942419453879517192" target="_blank" rel="noopener">小谷的足迹2 – iOS逆向安防从入门到秃头</a></li>
-<li><a href="https://blog.csdn.net/qq_34003239/article/details/97625507" target="_blank" rel="noopener">lldb插件 强大的调试神器Chisel</a></li>
+<a id="more"></a>
+
+<h3 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h3><p>经过查阅<a href="https://jestjs.io/docs/manual-mocks#mocking-node-modules" target="_blank" rel="noopener">jest文档</a>，下面简单记录下核心点。<br>比如我想mock一个依赖名为 <code>@foo/bar</code>，那么可以在<code>node_modules</code>同级的地方新建一个文件夹 <code>__mocks__</code>，并且在其下建立<code>@foo/bar.js</code>。  </p>
+<p>此时jest在执行单元测试的过程中，如果遇到如<code>import bar from &#39;@foo/bar&#39;</code>时，就会从 <code>__mocks__</code>中的对应目录中加载该依赖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── __mocks__/</span><br><span class="line">│   └── @foo/</span><br><span class="line">│       └── bar.js</span><br><span class="line">├── node_modules</span><br><span class="line">├── src</span><br><span class="line">└── ...</span><br></pre></td></tr></table></figure>
+
+<p>此时，就可以针对依赖的逻辑进行随心所欲的修改（mock）了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// __mocks__/@foo/bar.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="comment">// 逻辑重写</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么此时问题又来了，一个模块会导出很多方法，只想覆盖某一个导出的方法逻辑，其他保持不变，如何实现？</p>
+<p>也很简单，使用<code>jest.requireActual(moduleName)</code>即可:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// __mocks__/@foo/bar.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 拿到真实的模块导出</span></span><br><span class="line"><span class="keyword">const</span> bar = jest.requireActual(<span class="string">'@foo/bar'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新导致 mock 后的模块</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="comment">// 其他导出保持不变</span></span><br><span class="line">    ...bar,</span><br><span class="line">    <span class="comment">// 只重写部分导出的逻辑</span></span><br><span class="line">    getConfig() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://jestjs.io/docs/manual-mocks" target="_blank" rel="noopener">jest manual-mocks</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/" data-id="clo2jaiio000705xkkd1nejpu" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/10/23/javascript/jest单元测试中如何mock模块/" data-id="clo2jaiii000205xkohhufuu8" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unit-test/">unit test</a></li></ul>
 
     </footer>
   </div>
@@ -129,19 +135,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/01/21/javascript/如何实现一个js浏览器端沙箱/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          如何实现一个js浏览器端沙箱
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/12/Shell脚本/终端实用命令/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mac终端实用命令</div>
+      <div class="article-nav-title">nodejs中 的 AsyncLocalStorage</div>
     </a>
   
 </nav>
