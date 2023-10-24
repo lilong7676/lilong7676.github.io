@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="费默 - 分享">
 <meta property="og:description" content="问题背景 在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2023-10-23T06:44:33.335Z">
+<meta property="og:updated_time" content="2023-10-24T01:40:43.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jest单元测试中如何mock模块">
 <meta name="twitter:description" content="问题背景 在给一个nodejs express项目写jest单元测试的过程中，发现有些依赖在单元测试代码中会报错，原因是某些配置没有加载，当然在正常的运行中肯定是ok的，只有在单元测试中会出现。然而这些配置的加载逻辑是在所依赖的框架内部写的，而且有些配置是线上获取的配置，只有在内网环境才能获取到。所以问题就来了，怎么在jest中mock这个依赖（的配置加载逻辑）？">
@@ -98,7 +98,7 @@
         
     <div id="toc">
         <strong class="sidebar-title">目录:</strong>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题背景"><span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方式"><span class="toc-text">解决方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题背景"><span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方式"><span class="toc-text">解决方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义mock模块的逻辑"><span class="toc-text">自定义mock模块的逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
     </div>
 
         <h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><blockquote>
@@ -116,6 +116,10 @@
 <p>那么此时问题又来了，一个模块会导出很多方法，只想覆盖某一个导出的方法逻辑，其他保持不变，如何实现？</p>
 <p>也很简单，使用<code>jest.requireActual(moduleName)</code>即可:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// __mocks__/@foo/bar.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 拿到真实的模块导出</span></span><br><span class="line"><span class="keyword">const</span> bar = jest.requireActual(<span class="string">'@foo/bar'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新导致 mock 后的模块</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="comment">// 其他导出保持不变</span></span><br><span class="line">    ...bar,</span><br><span class="line">    <span class="comment">// 只重写部分导出的逻辑</span></span><br><span class="line">    getConfig() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义mock模块的逻辑"><a href="#自定义mock模块的逻辑" class="headerlink" title="自定义mock模块的逻辑"></a>自定义mock模块的逻辑</h3><p>上面我们mock了<code>@foo/bar</code>模块的逻辑，注意到这个mock会针对所有的测试文件生效，无需显式的调用<code>jest.mock(&#39;@foo/bar&#39;)</code>。  
+那么如果我想要某一个测试文件单独使用不同逻辑的<code>@foo/bar</code>，怎么实现？<br>很简单，jest同样提供了简单的 api，看下面这个例子就知道了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// my.test.ts</span></span><br><span class="line"><span class="comment">// 使用 jest.mock('moduleName', implFactory) api 来单独mock模块逻辑</span></span><br><span class="line">jest.mock(<span class="string">'@foo.bar'</span>, () =&gt; &#123;</span><br><span class="line">   getConfig() &#123;</span><br><span class="line">       <span class="keyword">return</span> &#123;</span><br><span class="line">           <span class="comment">// ...</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://jestjs.io/docs/manual-mocks" target="_blank" rel="noopener">jest manual-mocks</a></li>
