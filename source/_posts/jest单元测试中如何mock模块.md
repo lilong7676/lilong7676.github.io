@@ -60,5 +60,21 @@ module.exports = {
 }
 ```
 
+### 自定义mock模块的逻辑
+上面我们mock了`@foo/bar`模块的逻辑，注意到这个mock会针对所有的测试文件生效，无需显式的调用`jest.mock('@foo/bar')`。  
+那么如果我想要某一个测试文件单独使用不同逻辑的`@foo/bar`，怎么实现？  
+很简单，jest同样提供了简单的 api，看下面这个例子就知道了：
+```javascript
+ // my.test.ts
+ // 使用 jest.mock('moduleName', implFactory) api 来单独mock模块逻辑
+ jest.mock('@foo.bar', () => {
+    getConfig() {
+        return {
+            // ...
+        }
+    }
+ })
+```
+
 ### 参考
 - [jest manual-mocks](https://jestjs.io/docs/manual-mocks)
