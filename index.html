@@ -70,6 +70,93 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-v8中isolate和context的关系" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/" class="article-date">
+  <time datetime="2023-10-27T02:23:56.000Z" itemprop="datePublished">2023-10-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/27/uncategorized/v8中isolate和context的关系/">v8中isolate和context的关系</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>一个 isolate 是否可以创建多个 context ?<br>如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？  </p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[<a href="https://github.com/laverdet/isolated-vm]，底层使用的就是" target="_blank" rel="noopener">https://github.com/laverdet/isolated-vm]，底层使用的就是</a> v8 运行时，所以初步调研了一下。</p>
+<h4 id="isolate"><a href="#isolate" class="headerlink" title="isolate"></a>isolate</h4><p>isolate 是 v8 实例的概念。一般情况下，isolated 和 线程(threads)是 1:1 的关系，一个 isolate 与主线程(main thread)相关联，一个 isolate 也可以与工作线程相关联(worker thread)。</p>
+<h4 id="context"><a href="#context" class="headerlink" title="context"></a>context</h4><p>context(上下文)是 V8 中全局变量作用域的概念。粗略地说，一个 window 对象对应一个 context。例如，iframe 具有与其 parent 的 window 不同的 window 对象。因此 iframe 的 context 与 parent iframe 的 context 不同。由于这些 context 创建自己的全局变量 scope ，因此 iframe 的全局变量和原型链与 parent iframe 的全局变量和原型链是隔离的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/10/27/uncategorized/v8中isolate和context的关系/" data-id="cloxmfuim000l6mxk6u07w2u7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jest中使用msw（Mock-Service-Worker）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/" class="article-date">
+  <time datetime="2023-10-26T09:04:26.000Z" itemprop="datePublished">2023-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/">jest中使用msw（Mock Service Worker）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在写单元测试的时候，经常会遇到需要mock请求响应内容，如果用传统的mock方式，比如mock fetch等，会比较繁琐。有没有类似于可以提供一个后端server的能力，使得请求时可以无感知而且也不需要手动patch一些依赖等。</p>
+<p>msw（Mock Service Worker）就提供了这个能力，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers" target="_blank" rel="noopener">Service Worker</a>扮演的角色其实就很类似于一个Backend Server。所以，在浏览器端，可以很自然的利用浏览器标准的Service Worker API来拦截网络请求，有现成的为啥不用呢？</p>
+<p>即使在nodejs端，虽然没有Service Worker的概念，但是msw也是基本抹平了使用上的差异，刚好手头有个node项目需要在单测中mock网络请求，下面简单记录下msw的使用方式。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/" data-id="cloxmfui000006mxk3xe59pyz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-jest单元测试中如何mock模块" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2023/10/23/javascript/jest单元测试中如何mock模块/" class="article-date">
@@ -107,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/10/23/javascript/jest单元测试中如何mock模块/" data-id="clo2jaiii000205xkohhufuu8" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/10/23/javascript/jest单元测试中如何mock模块/" data-id="cloxmfuif00086mxki85mrwua" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unit-test/">unit test</a></li></ul>
@@ -155,7 +242,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/" data-id="clo2jaij1000q05xk4opb5tzr" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/07/21/javascript/nodejs中的-AsyncLocalStorage/" data-id="cloxmfuij000e6mxkvkzpap2i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li></ul>
@@ -214,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/" data-id="clo2jaij6001205xk3cd677pk" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/" data-id="cloxmfuiv001f6mxky11m955g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
@@ -261,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/" data-id="clo2jaiiv000g05xkjat9tpwh" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/" data-id="cloxmfuip000z6mxki73yscv9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -311,7 +398,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" data-id="clo2jaij7001605xk74neaf4z" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" data-id="cloxmfuiu001d6mxk86fq9li4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -366,7 +453,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" data-id="clo2jaij9001f05xkt4gh4xs5" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" data-id="cloxmfuix001n6mxkv3z3odrc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li></ul>
@@ -422,7 +509,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" data-id="clo2jaiit000d05xkmb7irytm" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" data-id="cloxmfuin000p6mxk4b5hukl4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li></ul>
@@ -469,113 +556,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" data-id="clo2jaiiz000i05xkixaalz9w" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" data-id="cloxmfuip000w6mxkjm7v2byi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/">Babel</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-babel的原理及插件的编写（简要）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/11/23/javascript/babel的原理及插件的编写（简要）/" class="article-date">
-  <time datetime="2022-11-23T02:39:06.000Z" itemprop="datePublished">2022-11-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/11/23/javascript/babel的原理及插件的编写（简要）/">babel 的原理及插件的编写（简要）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- # 什么是 AST 
-# 访问者模式
-# babel-parser
-# babel-traverse -->
-
-<h3 id="由浅入深，先从几个简单的插件的编写开始吧"><a href="#由浅入深，先从几个简单的插件的编写开始吧" class="headerlink" title="由浅入深，先从几个简单的插件的编写开始吧"></a>由浅入深，先从几个简单的插件的编写开始吧</h3><p>（本次分析的 babel 版本为 7.20.4）</p>
-        
-          <p class="article-more-link">
-            <a href="/2022/11/23/javascript/babel的原理及插件的编写（简要）/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/11/23/javascript/babel的原理及插件的编写（简要）/" data-id="clo2jaiil000505xk0m7nue9v" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/">Babel</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-初步安装-Knative" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/09/08/Knative/初步安装-Knative/" class="article-date">
-  <time datetime="2022-09-08T02:02:11.000Z" itemprop="datePublished">2022-09-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Knative/">Knative</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/09/08/Knative/初步安装-Knative/">初步安装 knative</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>参考资料：<br><a href="https://knative.dev/docs/getting-started/quickstart-install/#before-you-begin" target="_blank" rel="noopener">https://knative.dev/docs/getting-started/quickstart-install/#before-you-begin</a></p>
-<p>注意，由于我在虚拟机里走了vpn代理，所以以下命令都没有使用国内源。</p>
-<p>前提条件：</p>
-<ol>
-<li>安装了 minikube、kubectl，参考 <a href="https://lilong7676.github.io/2022/09/08/minikube/k8s/%E5%9C%A8-vmware-centos7-%E4%B8%AD%E6%8E%A2%E7%B4%A2-k8s-%E4%B8%8E-KNative/">在 vmware centos7 中安装 minikube</a>.</li>
-</ol>
-        
-          <p class="article-more-link">
-            <a href="/2022/09/08/Knative/初步安装-Knative/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/09/08/Knative/初步安装-Knative/" data-id="clo2jaij0000m05xkmul76cw5" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -640,6 +625,14 @@
       <ul>
         
           <li>
+            <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/">v8中isolate和context的关系</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/">jest中使用msw（Mock Service Worker）</a>
+          </li>
+        
+          <li>
             <a href="/2023/10/23/javascript/jest单元测试中如何mock模块/">jest单元测试中如何mock模块</a>
           </li>
         
@@ -649,14 +642,6 @@
         
           <li>
             <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
-          </li>
-        
-          <li>
-            <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
           </li>
         
       </ul>

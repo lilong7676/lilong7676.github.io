@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilong7676.github.io/"/>
-  <updated>2023-10-24T01:40:43.497Z</updated>
+  <updated>2023-11-14T05:56:10.757Z</updated>
   <id>https://lilong7676.github.io/</id>
   
   <author>
@@ -15,6 +15,47 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>v8中isolate和context的关系</title>
+    <link href="https://lilong7676.github.io/2023/10/27/uncategorized/v8%E4%B8%ADisolate%E5%92%8Ccontext%E7%9A%84%E5%85%B3%E7%B3%BB/"/>
+    <id>https://lilong7676.github.io/2023/10/27/uncategorized/v8中isolate和context的关系/</id>
+    <published>2023-10-27T02:23:56.000Z</published>
+    <updated>2023-11-14T05:56:10.757Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>一个 isolate 是否可以创建多个 context ?<br>如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？  </p><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[<a href="https://github.com/laverdet/isolated-vm]，底层使用的就是" target="_blank" rel="noopener">https://github.com/laverdet/isolated-vm]，底层使用的就是</a> v8 运行时，所以初步调研了一下。</p><h4 id="isolate"><a href="#isolate" class="headerlink" title="isolate"></a>isolate</h4><p>isolate 是 v8 实例的概念。一般情况下，isolated 和 线程(threads)是 1:1 的关系，一个 isolate 与主线程(main thread)相关联，一个 isolate 也可以与工作线程相关联(worker thread)。</p><h4 id="context"><a href="#context" class="headerlink" title="context"></a>context</h4><p>context(上下文)是 V8 中全局变量作用域的概念。粗略地说，一个 window 对象对应一个 context。例如，iframe 具有与其 parent 的 window 不同的 window 对象。因此 iframe 的 context 与 parent iframe 的 context 不同。由于这些 context 创建自己的全局变量 scope ，因此 iframe 的全局变量和原型链与 parent iframe 的全局变量和原型链是隔离的。</p><a id="more"></a><p>举个例子：  </p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.html</span></span><br><span class="line">&lt;html&gt;&lt;body&gt;</span><br><span class="line">&lt;iframe src="iframe.html"&gt;&lt;/iframe&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var foo = 1234;</span><br><span class="line">String.prototype.substr =</span><br><span class="line">    function (position, length) &#123; // Hijacks String.prototype.substr</span><br><span class="line">        console.log(length);</span><br><span class="line">        return "hijacked";</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iframe.html</span></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">console</span>.log(foo);  <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> bar = <span class="string">"aaaa"</span>.substr(<span class="number">0</span>, <span class="number">2</span>);  <span class="comment">// Nothing is logged.</span></span><br><span class="line"><span class="built_in">console</span>.log(bar);  <span class="comment">// "aa"</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure><p>总的来说，每一个 frame 有一个 window 对象，每一个 window 对象有一个 context，每一个 context 有它自己的全局变量作用范围和原型链。</p><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>结论很明显了，一个 isolate 可以创建多个 context，而且 context 之间不会存在全局变量污染的情况。</p><h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>(What exactly is the difference between v8::Isolate and v8::Context?)[<a href="https://stackoverflow.com/questions/19383724/what-exactly-is-the-difference-between-v8isolate-and-v8context]" target="_blank" rel="noopener">https://stackoverflow.com/questions/19383724/what-exactly-is-the-difference-between-v8isolate-and-v8context]</a></p><p>(Design of V8 bindings)[<a href="https://chromium.googlesource.com/chromium/src/+/master/third_party/blink/renderer/bindings/core/v8/V8BindingDesign.md]" target="_blank" rel="noopener">https://chromium.googlesource.com/chromium/src/+/master/third_party/blink/renderer/bindings/core/v8/V8BindingDesign.md]</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;一个 isolate 是否可以创建多个 context ?&lt;br&gt;如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？  &lt;/p&gt;
+&lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[&lt;a href=&quot;https://github.com/laverdet/isolated-vm]，底层使用的就是&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/laverdet/isolated-vm]，底层使用的就是&lt;/a&gt; v8 运行时，所以初步调研了一下。&lt;/p&gt;
+&lt;h4 id=&quot;isolate&quot;&gt;&lt;a href=&quot;#isolate&quot; class=&quot;headerlink&quot; title=&quot;isolate&quot;&gt;&lt;/a&gt;isolate&lt;/h4&gt;&lt;p&gt;isolate 是 v8 实例的概念。一般情况下，isolated 和 线程(threads)是 1:1 的关系，一个 isolate 与主线程(main thread)相关联，一个 isolate 也可以与工作线程相关联(worker thread)。&lt;/p&gt;
+&lt;h4 id=&quot;context&quot;&gt;&lt;a href=&quot;#context&quot; class=&quot;headerlink&quot; title=&quot;context&quot;&gt;&lt;/a&gt;context&lt;/h4&gt;&lt;p&gt;context(上下文)是 V8 中全局变量作用域的概念。粗略地说，一个 window 对象对应一个 context。例如，iframe 具有与其 parent 的 window 不同的 window 对象。因此 iframe 的 context 与 parent iframe 的 context 不同。由于这些 context 创建自己的全局变量 scope ，因此 iframe 的全局变量和原型链与 parent iframe 的全局变量和原型链是隔离的。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>jest中使用msw（Mock Service Worker）</title>
+    <link href="https://lilong7676.github.io/2023/10/26/uncategorized/jest%E4%B8%AD%E4%BD%BF%E7%94%A8msw%EF%BC%88Mock-Service-Worker%EF%BC%89/"/>
+    <id>https://lilong7676.github.io/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/</id>
+    <published>2023-10-26T09:04:26.000Z</published>
+    <updated>2023-11-14T00:59:23.147Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在写单元测试的时候，经常会遇到需要mock请求响应内容，如果用传统的mock方式，比如mock fetch等，会比较繁琐。有没有类似于可以提供一个后端server的能力，使得请求时可以无感知而且也不需要手动patch一些依赖等。</p><p>msw（Mock Service Worker）就提供了这个能力，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers" target="_blank" rel="noopener">Service Worker</a>扮演的角色其实就很类似于一个Backend Server。所以，在浏览器端，可以很自然的利用浏览器标准的Service Worker API来拦截网络请求，有现成的为啥不用呢？</p><p>即使在nodejs端，虽然没有Service Worker的概念，但是msw也是基本抹平了使用上的差异，刚好手头有个node项目需要在单测中mock网络请求，下面简单记录下msw的使用方式。</p><a id="more"></a><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>下面的代码基于 <code>msw@1.3.2</code> 版本  </p><p>首先我们需要在单元测试启动的时候让 msw 的拦截能力生效，所以在 <code>jest.config.js</code> 中需要配置 <code>setupFiles 或者 setupFilesAfterEnv</code>，这个根据实际情况配置即可。我配置的值为<code>[&#39;&lt;rootDir&gt;/test/jest.setup.ts&#39;]</code>，接着写入 msw 初始化内容：</p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// jest.setup.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> server <span class="keyword">from</span> <span class="string">'./server/setup-server'</span>;</span><br><span class="line"></span><br><span class="line">beforeAll(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 开始监听拦截请求</span></span><br><span class="line">  server.listen();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 为了防止在运行时添加了额外的 handlers 影响到其他的单测，</span></span><br><span class="line">  <span class="comment">// 这里需要重置 handlers 为初始值</span></span><br><span class="line">  server.resetHandlers();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">afterAll(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 关闭拦截 &amp; 清理工作</span></span><br><span class="line">  server.close();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/setup-server.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; setupServer &#125; <span class="keyword">from</span> <span class="string">'msw/node'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; handlers &#125; <span class="keyword">from</span> <span class="string">'./handler'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为 request handlers 提供服务端 api </span></span><br><span class="line"><span class="keyword">const</span> server = setupServer(...handlers);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> server;</span><br></pre></td></tr></table></figure><p>上面基本就是一些 msw 初始化的模板代码，开发者关心的真正核心逻辑其实就是 handlers 的编写了:  </p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/handlers.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; rest &#125; <span class="keyword">from</span> <span class="string">'msw'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> handlers = [</span><br><span class="line">  rest.get(</span><br><span class="line">    <span class="string">'http://www.xxx.com/'</span>,</span><br><span class="line">    (req, res, ctx) =&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> res(</span><br><span class="line">        ctx.json(&#123;</span><br><span class="line">          hello: <span class="string">'msw'</span></span><br><span class="line">        &#125;)</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">];</span><br></pre></td></tr></table></figure><p>使用方式还是很简单的，而且不局限在单元测试上，还可以在接口的 mock 上使用，使用体验还是比较友好的。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在写单元测试的时候，经常会遇到需要mock请求响应内容，如果用传统的mock方式，比如mock fetch等，会比较繁琐。有没有类似于可以提供一个后端server的能力，使得请求时可以无感知而且也不需要手动patch一些依赖等。&lt;/p&gt;
+&lt;p&gt;msw（Mock Service Worker）就提供了这个能力，&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Service Worker&lt;/a&gt;扮演的角色其实就很类似于一个Backend Server。所以，在浏览器端，可以很自然的利用浏览器标准的Service Worker API来拦截网络请求，有现成的为啥不用呢？&lt;/p&gt;
+&lt;p&gt;即使在nodejs端，虽然没有Service Worker的概念，但是msw也是基本抹平了使用上的差异，刚好手头有个node项目需要在单测中mock网络请求，下面简单记录下msw的使用方式。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>jest单元测试中如何mock模块</title>
@@ -488,58 +529,6 @@
     
       <category term="javascript" scheme="https://lilong7676.github.io/categories/javascript/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>iOS逆向学习</title>
-    <link href="https://lilong7676.github.io/2021/05/09/iOS/iOS%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0/"/>
-    <id>https://lilong7676.github.io/2021/05/09/iOS/iOS逆向学习/</id>
-    <published>2021-05-09T08:20:20.000Z</published>
-    <updated>2023-06-08T06:26:43.565Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>参考资料：</p></blockquote><ul><li><a href="https://www.jianshu.com/p/f229f8df3220" target="_blank" rel="noopener">2019年iOS逆向最新学习资料（一）：理论基础和工具准备</a></li><li><a href="https://www.jianshu.com/p/8d42d71fb9e1" target="_blank" rel="noopener">iOS逆向, 基础工具之LLDB和debugserver</a></li><li><a href="https://juejin.cn/post/6844904094360961037" target="_blank" rel="noopener">debugserver+lldb使用</a></li><li><a href="https://github.com/AloneMonkey/MonkeyDev/wiki/%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">MonkeyDev 文档</a></li><li><a href="https://www.jianshu.com/p/991b13c10c1f" target="_blank" rel="noopener">Cycript 基本使用</a></li><li><a href="https://juejin.cn/post/6942419453879517192" target="_blank" rel="noopener">小谷的足迹2 – iOS逆向安防从入门到秃头</a></li><li><a href="https://blog.csdn.net/qq_34003239/article/details/97625507" target="_blank" rel="noopener">lldb插件 强大的调试神器Chisel</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;参考资料：&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/f229f8df3220&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;2019年iOS逆向最
-      
-    
-    </summary>
-    
-      <category term="iOS" scheme="https://lilong7676.github.io/categories/iOS/"/>
-    
-    
-      <category term="iOS" scheme="https://lilong7676.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mac终端实用命令</title>
-    <link href="https://lilong7676.github.io/2019/06/12/Shell%E8%84%9A%E6%9C%AC/%E7%BB%88%E7%AB%AF%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
-    <id>https://lilong7676.github.io/2019/06/12/Shell脚本/终端实用命令/</id>
-    <published>2019-06-12T00:16:41.000Z</published>
-    <updated>2023-06-08T06:26:43.567Z</updated>
-    
-    <content type="html"><![CDATA[<p>查看该目录下各个文件和子目录各占多少空间</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh *</span><br></pre></td></tr></table></figure><a id="more"></a><p>批量复制文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp *.png *.jpeg *.gif /destpath (剪切的话 cp换成 mv)</span><br></pre></td></tr></table></figure><p>快速创建便笺<br>选中文字，然后</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift + command + Y</span><br></pre></td></tr></table></figure><p>保持窗口的激活状态<br>当你在当前窗口操作时，想拖拽其他窗口， 可以按住<code>command</code>再进行拖 </p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;查看该目录下各个文件和子目录各占多少空间&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;du -sh *&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Shell脚本" scheme="https://lilong7676.github.io/categories/Shell%E8%84%9A%E6%9C%AC/"/>
-    
-    
-      <category term="shell" scheme="https://lilong7676.github.io/tags/shell/"/>
     
   </entry>
   

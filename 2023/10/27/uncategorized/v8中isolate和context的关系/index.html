@@ -5,19 +5,20 @@
   
 
   
-  <title>Archives: 2023/3 | 费默 - 分享</title>
+  <title>v8中isolate和context的关系 | 费默 - 分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="FE,iOSer">
+  <meta name="description" content="问题一个 isolate 是否可以创建多个 context ?如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？   背景其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[https://github.com/laverdet/isolated-vm]，底层使用的就是 v8 运行时，所以初步调研了">
 <meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="费默 - 分享">
-<meta property="og:url" content="https://lilong7676.github.io/archives/2023/03/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="v8中isolate和context的关系">
+<meta property="og:url" content="https://lilong7676.github.io/2023/10/27/uncategorized/v8中isolate和context的关系/index.html">
 <meta property="og:site_name" content="费默 - 分享">
-<meta property="og:description" content="FE,iOSer">
+<meta property="og:description" content="问题一个 isolate 是否可以创建多个 context ?如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？   背景其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[https://github.com/laverdet/isolated-vm]，底层使用的就是 v8 运行时，所以初步调研了">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2023-11-14T05:56:10.757Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="费默 - 分享">
-<meta name="twitter:description" content="FE,iOSer">
+<meta name="twitter:title" content="v8中isolate和context的关系">
+<meta name="twitter:description" content="问题一个 isolate 是否可以创建多个 context ?如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？   背景其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[https://github.com/laverdet/isolated-vm]，底层使用的就是 v8 运行时，所以初步调研了">
   
     <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
   
@@ -68,59 +69,70 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/" class="archive-article-date">
-  <time datetime="2023-03-14T02:38:04.000Z" itemprop="datePublished">Mar 14</time>
+        <section id="main"><article id="post-v8中isolate和context的关系" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/" class="article-date">
+  <time datetime="2023-10-27T02:23:56.000Z" itemprop="datePublished">2023-10-27</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/14/Shell脚本/如何通过-SSH-在服务器上远程执行命令/">如何通过 SSH 在服务器上远程执行命令</a>
+    <h1 class="article-title" itemprop="name">
+      v8中isolate和context的关系
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/" class="archive-article-date">
-  <time datetime="2023-03-03T01:38:18.000Z" itemprop="datePublished">Mar 3</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/03/uncategorized/使用peerjs实现一个基于webrtc的简单远程网络摄像头/">使用peerjs实现一个基于webrtc的简单远程网络摄像头</a>
-    </h1>
-  
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#isolate"><span class="toc-text">isolate</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#context"><span class="toc-text">context</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+    </div>
 
-    </header>
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>一个 isolate 是否可以创建多个 context ?<br>如果可以，那这多个context是否会互相影响？是否会存在全局变量污染？  </p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>其实问题的真正背景是在做云函数运行时的性能优化时提出来的。所以主要是 nodejs 环境，使用的库是 (isolated-vm)[<a href="https://github.com/laverdet/isolated-vm]，底层使用的就是" target="_blank" rel="noopener">https://github.com/laverdet/isolated-vm]，底层使用的就是</a> v8 运行时，所以初步调研了一下。</p>
+<h4 id="isolate"><a href="#isolate" class="headerlink" title="isolate"></a>isolate</h4><p>isolate 是 v8 实例的概念。一般情况下，isolated 和 线程(threads)是 1:1 的关系，一个 isolate 与主线程(main thread)相关联，一个 isolate 也可以与工作线程相关联(worker thread)。</p>
+<h4 id="context"><a href="#context" class="headerlink" title="context"></a>context</h4><p>context(上下文)是 V8 中全局变量作用域的概念。粗略地说，一个 window 对象对应一个 context。例如，iframe 具有与其 parent 的 window 不同的 window 对象。因此 iframe 的 context 与 parent iframe 的 context 不同。由于这些 context 创建自己的全局变量 scope ，因此 iframe 的全局变量和原型链与 parent iframe 的全局变量和原型链是隔离的。</p>
+<a id="more"></a>
+
+<p>举个例子：  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.html</span></span><br><span class="line">&lt;html&gt;&lt;body&gt;</span><br><span class="line">&lt;iframe src="iframe.html"&gt;&lt;/iframe&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var foo = 1234;</span><br><span class="line">String.prototype.substr =</span><br><span class="line">    function (position, length) &#123; // Hijacks String.prototype.substr</span><br><span class="line">        console.log(length);</span><br><span class="line">        return "hijacked";</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iframe.html</span></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">console</span>.log(foo);  <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> bar = <span class="string">"aaaa"</span>.substr(<span class="number">0</span>, <span class="number">2</span>);  <span class="comment">// Nothing is logged.</span></span><br><span class="line"><span class="built_in">console</span>.log(bar);  <span class="comment">// "aa"</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>总的来说，每一个 frame 有一个 window 对象，每一个 window 对象有一个 context，每一个 context 有它自己的全局变量作用范围和原型链。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>结论很明显了，一个 isolate 可以创建多个 context，而且 context 之间不会存在全局变量污染的情况。</p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>(What exactly is the difference between v8::Isolate and v8::Context?)[<a href="https://stackoverflow.com/questions/19383724/what-exactly-is-the-difference-between-v8isolate-and-v8context]" target="_blank" rel="noopener">https://stackoverflow.com/questions/19383724/what-exactly-is-the-difference-between-v8isolate-and-v8context]</a></p>
+<p>(Design of V8 bindings)[<a href="https://chromium.googlesource.com/chromium/src/+/master/third_party/blink/renderer/bindings/core/v8/V8BindingDesign.md]" target="_blank" rel="noopener">https://chromium.googlesource.com/chromium/src/+/master/third_party/blink/renderer/bindings/core/v8/V8BindingDesign.md]</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/10/27/uncategorized/v8中isolate和context的关系/" data-id="cloxmfuim000l6mxk6u07w2u7" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">jest中使用msw（Mock Service Worker）</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         
