@@ -70,6 +70,113 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-如何构建并发布自己的docker镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" class="article-date">
+  <time datetime="2023-02-28T06:28:21.000Z" itemprop="datePublished">2023-02-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/">如何构建并发布自己的docker镜像 </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近想在云服务器上部署一个自己的 nginx 服务，通过docker 部署最方便。之前也发布过自己的docker镜像，但是时间长了老是忘记具体的命令是啥，这里做一个笔记记录下。  </p>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><p><code>docker cli</code> 提供了两个命令来完成构建\发布：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build <span class="comment"># 构建镜像</span></span><br><span class="line">docker pull/push <span class="comment"># 拉取/推送镜像</span></span><br></pre></td></tr></table></figure>
+
+<p>整体流程参考下图：  </p>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230228143743.png?x-oss-process=image/resize,w_800" alt="docker构建发布流程"></p>
+<h3 id="docker-build-构建镜像"><a href="#docker-build-构建镜像" class="headerlink" title="docker build 构建镜像"></a>docker build 构建镜像</h3><p>首先命令格式<a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank" rel="noopener">来自文档</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [OPTIONS] PATH | URL | -</span><br></pre></td></tr></table></figure>
+
+<p><code>docker build</code>是利用 Dockerfile 内的指令来构建镜像。通常我们会把 Dockerfile 也加入版本管理，所以对镜像的修改操作也会有记录，这相比 <code>docker commit</code>的黑箱操作好很多。Dockerfile 就不细讲了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/02/28/uncategorized/如何构建并发布自己的docker镜像/" data-id="clrafh019001nzbxk0vnu5mbo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-编译并运行-Chrome-Devtools-Frontend" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" class="article-date">
+  <time datetime="2023-01-12T01:59:51.000Z" itemprop="datePublished">2023-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/">编译并运行 Chrome Devtools Frontend</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<h4 id="Chrome-DevTools-工作原理简单介绍"><a href="#Chrome-DevTools-工作原理简单介绍" class="headerlink" title="Chrome DevTools 工作原理简单介绍"></a>Chrome DevTools 工作原理简单介绍</h4></blockquote>
+<p>Devtools 不只是我们在浏览器中按F12所打开的调试界面，它是 Chromium 的一部分，在 Electron 中也有集成。  </p>
+<p>Devtools 主要由四部分组成：  </p>
+<ul>
+<li><a href="https://github.com/ChromeDevTools/devtools-frontend" target="_blank" rel="noopener">Frontend</a>: 调试器前端，默认由 Chromium 内核层集成，DevTools Frontend 是一个 Web 应用程序，就是 JS + CSS + HTML 组成的；</li>
+<li><a href="https://github.com/ChromeDevTools/devtools-frontend/tree/main/v8" target="_blank" rel="noopener">Backend</a>: 调试器后端，广义上主要由 Chromium、V8 或 Node.js(v8)提供，用来与 Frontend 连接与通信;</li>
+<li><a href="https://chromedevtools.github.io/devtools-protocol/" target="_blank" rel="noopener">Protocol</a>: 通信协议,调试器前端和后端通过此协议通信，协议遵循 <a href="https://www.jianshu.com/p/49cd5c9a1664" target="_blank" rel="noopener">JSON RPC2.0</a> 规范;</li>
+<li><a href="https://github.com/ChromeDevTools/devtools-frontend/blob/b29da32422767c87749ca8132c2c0c8f378da6d7/front_end/core/sdk/Connections.ts#L13" target="_blank" rel="noopener">Connection</a>: 连接层，目前有 <code>WebSocketConnection</code>、<code>StubConnection</code>、<code>MainConnection</code> 三种连接方式，查看其他<a href="https://zhaomenghuan.js.org/blog/chrome-devtools-frontend-analysis-of-principle.html#devtools-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86" target="_blank" rel="noopener">资料</a>，也有说是消息通道，即 Embedder Channel、WebSocket Channel、Chrome Extensions Channel、USB/ADB Channel，但是我在当前的版本没有找到这部分代码；  </li>
+</ul>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/20230112104133.png?x-oss-process=image/resize,w_800" alt="devtools 图示"></p>
+        
+          <p class="article-more-link">
+            <a href="/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2023/01/12/javascript/编译并运行-Chrome-Devtools-Frontend/" data-id="clrafh01d001zzbxk0wzzr0qx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-使用-ChromeRemoteInterface-调试-nodejs-代码" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" class="article-date">
@@ -114,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" data-id="clqozcg7r000qyzxkuy5m8h9e" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2023/01/10/javascript/使用-ChromeRemoteInterface-调试-nodejs-代码/" data-id="clrafh013000vzbxkla7viir0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li></ul>
@@ -161,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" data-id="clqozcg7s000uyzxkgemlicn5" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/12/09/javascript/使用-babel-实现一个自创的-js-语法/" data-id="clrafh014000yzbxkn8g9jz42" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/">Babel</a></li></ul>
@@ -213,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/11/23/javascript/babel的原理及插件的编写（简要）/" data-id="clqozcg7a0001yzxkmujas882" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/11/23/javascript/babel的原理及插件的编写（简要）/" data-id="clrafh00d0000zbxkrkaye8z1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/">Babel</a></li></ul>
@@ -265,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/09/08/Knative/初步安装-Knative/" data-id="clqozcg7t0012yzxk5w0bo80x" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/09/08/Knative/初步安装-Knative/" data-id="clrafh0160017zbxk7y37zpwb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -311,7 +418,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/09/08/minikube/k8s/在-vmware-centos7-中安装与探索-k8s/" data-id="clqozcg7u0018yzxkzfh4s22r" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/09/08/minikube/k8s/在-vmware-centos7-中安装与探索-k8s/" data-id="clrafh018001hzbxkbkysufeo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -368,7 +475,7 @@
       
     </li></ul></li></ul></div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/09/01/flutter/flutter中通过ffi使用quickjs/" data-id="clqozcg780000yzxkr0bpuarb" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/09/01/flutter/flutter中通过ffi使用quickjs/" data-id="clrafh00i0002zbxkp1d7v3m0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -414,7 +521,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="clqozcg7p000jyzxkkwyhrwc3" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/31/javascript/web前端Proxy沙箱实现时需注意RegExp等原生对象问题/" data-id="clrafh00u000hzbxkhzmzx5bk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -463,100 +570,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="clqozcg7y001ryzxkutobgv90" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-一个简单的WebAssembly编译流程demo" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" class="article-date">
-  <time datetime="2022-08-25T08:09:19.000Z" itemprop="datePublished">2022-08-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/WebAssembly/">WebAssembly</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/">一个简单的 WebAssembly 编译流程 demo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>记录下如何讲一个简单的程序编译为 wasm。由于我是mac环境，所以以下以mac环境为主，其他环境请参考 <a href="https://github.com/emscripten-core/emsdk" target="_blank" rel="noopener">官方github</a>。</p>
-        
-          <p class="article-more-link">
-            <a href="/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/WebAssembly/一个简单的WebAssembly编译流程demo/" data-id="clqozcg7q000lyzxk69xy1tax" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" class="article-date">
-  <time datetime="2022-08-25T07:33:09.000Z" itemprop="datePublished">2022-08-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/">参考iOS开发中的 UINavigationController 的思想，实现一个 React NavigationController</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="参考iOS开发中的-UINavigationController-的思想，实现了在React项目中的类似-iOS-页面转场的效果。"><a href="#参考iOS开发中的-UINavigationController-的思想，实现了在React项目中的类似-iOS-页面转场的效果。" class="headerlink" title="参考iOS开发中的 UINavigationController 的思想，实现了在React项目中的类似 iOS 页面转场的效果。"></a>参考iOS开发中的 UINavigationController 的思想，实现了在React项目中的类似 iOS 页面转场的效果。</h4><p>github：<a href="https://github.com/lilong7676/simple-chat/tree/main/packages/navigation-controller" target="_blank" rel="noopener">navigation-controller</a></p>
-<ul>
-<li>使用方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install @lilong767676/navigation-controller</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lilong7676.github.io/2022/08/25/uncategorized/参考iOS开发中的-UINavigationController-的思想，实现一个-React-NavigationController/" data-id="clqozcg7u0015yzxk4dzbtzcj" class="article-share-link">Share</a>
+      <a data-url="https://lilong7676.github.io/2022/08/29/uncategorized/记RegExp-在Eval及new-Function里的行为异常问题/" data-id="clrafh01c001wzbxkosq0ag90" class="article-share-link">Share</a>
       
       
     </footer>
@@ -581,7 +595,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPT/">GPT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
     </div>
   </div>
 
@@ -610,7 +624,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
     </div>
   </div>
 
@@ -623,6 +637,14 @@
       <ul>
         
           <li>
+            <a href="/2024/01/11/GPT/使用TabbyML-tabby在本地部署一个类github-copilot/">使用TabbyML/tabby在本地部署一个类github copilot</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/28/rust/rust学习有感-2/">rust学习有感-2</a>
+          </li>
+        
+          <li>
             <a href="/2023/12/20/rust/rust学习有感-1/">rust学习有感-1</a>
           </li>
         
@@ -632,14 +654,6 @@
         
           <li>
             <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/">v8中isolate和context的关系</a>
-          </li>
-        
-          <li>
-            <a href="/2023/10/26/uncategorized/jest中使用msw（Mock-Service-Worker）/">jest中使用msw（Mock Service Worker）</a>
-          </li>
-        
-          <li>
-            <a href="/2023/10/23/javascript/jest单元测试中如何mock模块/">jest单元测试中如何mock模块</a>
           </li>
         
       </ul>
@@ -654,7 +668,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2023 lilong7676<br>
+      &copy; 2024 lilong7676<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
     </div>
   </div>

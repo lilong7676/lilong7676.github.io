@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>使用TabbyML/tabby在本地部署一个类github copilot | 费默 - 分享</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="刚好自己的 github copilot 过期了，就逛了下 github，发现了一个有趣的仓库 tabby，它的描述瞬间吸引了我哈哈：  Tabby is a self-hosted AI coding assistant, offering an open-source and on-premises alternative to GitHub Copilot. It boasts severa">
+<meta name="keywords" content="前端,js,iOS,Objective-c,Swift,oc,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用TabbyML&#x2F;tabby在本地部署一个类github copilot">
+<meta property="og:url" content="https://lilong7676.github.io/2024/01/11/GPT/使用TabbyML-tabby在本地部署一个类github-copilot/index.html">
+<meta property="og:site_name" content="费默 - 分享">
+<meta property="og:description" content="刚好自己的 github copilot 过期了，就逛了下 github，发现了一个有趣的仓库 tabby，它的描述瞬间吸引了我哈哈：  Tabby is a self-hosted AI coding assistant, offering an open-source and on-premises alternative to GitHub Copilot. It boasts severa">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111358602.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111359077.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111505414.png">
+<meta property="og:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111508794.png">
+<meta property="og:updated_time" content="2024-01-12T09:22:26.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用TabbyML&#x2F;tabby在本地部署一个类github copilot">
+<meta name="twitter:description" content="刚好自己的 github copilot 过期了，就逛了下 github，发现了一个有趣的仓库 tabby，它的描述瞬间吸引了我哈哈：  Tabby is a self-hosted AI coding assistant, offering an open-source and on-premises alternative to GitHub Copilot. It boasts severa">
+<meta name="twitter:image" content="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111358602.png">
+  
+    <link rel="alternate" href="/atom.xml" title="费默 - 分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">费默 - 分享</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just run.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lilong7676.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-使用TabbyML-tabby在本地部署一个类github-copilot" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2024/01/11/GPT/使用TabbyML-tabby在本地部署一个类github-copilot/" class="article-date">
+  <time datetime="2024-01-11T05:54:03.000Z" itemprop="datePublished">2024-01-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/GPT/">GPT</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用TabbyML/tabby在本地部署一个类github copilot
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+    <div id="toc">
+        <strong class="sidebar-title">目录:</strong>
+        
+    </div>
+
+        <p>刚好自己的 github copilot 过期了，就逛了下 github，发现了一个有趣的仓库 <a href="https://github.com/TabbyML/tabby" target="_blank" rel="noopener">tabby</a>，它的描述瞬间吸引了我哈哈：</p>
+<blockquote>
+<p>Tabby is a self-hosted AI coding assistant, offering an open-source and on-premises alternative to GitHub Copilot. It boasts several key features:</p>
+</blockquote>
+<blockquote>
+<p>Self-contained, with no need for a DBMS or cloud service.<br>OpenAPI interface, easy to integrate with existing infrastructure (e.g Cloud IDE).<br>Supports consumer-grade GPUs.  </p>
+</blockquote>
+<p>逛了下官网，发现可以在 Apple M1/M2 芯片的电脑上本地安装和使用，所以试了下，这里记录下。</p>
+<a id="more"></a>
+
+<p>安装的命令很简单  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">brew install tabbyml/tabby/tabby</span><br><span class="line"></span><br><span class="line"><span class="comment"># Start server with StarCoder-1B</span></span><br><span class="line">tabby serve --device metal --model TabbyML/StarCoder-1B</span><br></pre></td></tr></table></figure>
+
+<p>第二步如果启动的时候报类似于这个错误，则考虑科学上网下：<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111358602.png" alt></p>
+<p>下面是启动成功的截图：<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111359077.png" alt></p>
+<p>下一步就是安装对应的 vscode 插件，参考<a href="https://tabby.tabbyml.com/docs/extensions/installation/vscode" target="_blank" rel="noopener">官网链接</a></p>
+<p>使用效果 -&gt;<br><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111505414.png" alt></p>
+<p><img src="https://lilong7676-picture.oss-cn-hangzhou.aliyuncs.com/img/202401111508794.png" alt></p>
+<p>我目前的电脑配置 macbook air m1 丐中丐，总的来说，可以用，有的提示耗时过长了，有的直接没有提示。效果还需要后面用多了才能评价，但是总比没有的好。<br>还是很期待类似的技术能够硬件配置小型化，让个人电脑都能够部署。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lilong7676.github.io/2024/01/11/GPT/使用TabbyML-tabby在本地部署一个类github-copilot/" data-id="clrafh016001bzbxk2fpdpno9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/12/28/rust/rust学习有感-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">rust学习有感-2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPT/">GPT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Knative/">Knative</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell脚本/">Shell脚本</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/WebAssembly/">WebAssembly</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/flutter/">flutter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/">minikube</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/minikube/k8s/">k8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AsyncLocalStorage/">AsyncLocalStorage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/">CI/CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChromeDevTools/">ChromeDevTools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Indexeddb/">Indexeddb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAssembly/">WebAssembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unit-test/">unit test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AsyncLocalStorage/" style="font-size: 10px;">AsyncLocalStorage</a> <a href="/tags/Babel/" style="font-size: 15px;">Babel</a> <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/ChromeDevTools/" style="font-size: 15px;">ChromeDevTools</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Indexeddb/" style="font-size: 10px;">Indexeddb</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/unit-test/" style="font-size: 10px;">unit test</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/01/11/GPT/使用TabbyML-tabby在本地部署一个类github-copilot/">使用TabbyML/tabby在本地部署一个类github copilot</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/28/rust/rust学习有感-2/">rust学习有感-2</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/20/rust/rust学习有感-1/">rust学习有感-1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/21/flutter/mytoolbox-有趣的想法之实现一个粘贴板历史管理工具/">mytoolbox - 有趣的想法之实现一个粘贴板历史管理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/27/uncategorized/v8中isolate和context的关系/">v8中isolate和context的关系</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 lilong7676<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> | <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备2023015334号</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
